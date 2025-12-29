@@ -1,5 +1,3 @@
-import React from "react";
-
 const ServiceCard = ({ image, title, icon: IconComponent }) => {
     return (
         <div
@@ -42,7 +40,7 @@ const ServiceCard = ({ image, title, icon: IconComponent }) => {
 
             {/* Content */}
             <div className="p-4 pt-6">
-                <p className="text-gray-900 text-sm font-medium leading-snug max-w-[160px]">
+                <p className="text-gray-900 text-sm font-medium leading-snug max-w-40">
                     {title}
                 </p>
             </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import kitchenBg from "../../assets/images/kitchen-items-1.png";
 
 const RequestQuoteSection = () => {
     return (
@@ -7,10 +8,7 @@ const RequestQuoteSection = () => {
             <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
-                    backgroundImage: `
-                        linear-gradient(90deg, rgba(13,110,253,0.95) 0%, rgba(18,127,255,0.6) 100%),
-                        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2000')
-                    `,
+                    backgroundImage: `linear-gradient(90deg, rgba(13,110,253,0.95) 0%, rgba(18,127,255,0.6) 100%), url(${kitchenBg})`,
                 }}
             />
 

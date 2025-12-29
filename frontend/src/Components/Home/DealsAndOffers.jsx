@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import watchImg from "../../assets/images/watch.png";
+import laptopImg from "../../assets/images/laptop.png";
+import cameraImg from "../../assets/images/camera.png";
+import headphonesImg from "../../assets/images/headphones.png";
 
 const DealsAndOffers = () => {
     const deals = [
@@ -6,31 +10,31 @@ const DealsAndOffers = () => {
             id: 1,
             title: "Smart watches",
             discount: 25,
-            img: "https://i.imgur.com/8mXfS8v.png",
+            img: watchImg,
         },
         {
             id: 2,
             title: "Laptops",
             discount: 15,
-            img: "https://i.imgur.com/E6f6Esh.png",
+            img: laptopImg,
         },
         {
             id: 3,
             title: "GoPro cameras",
             discount: 40,
-            img: "https://i.imgur.com/39lA9X0.png",
+            img: cameraImg,
         },
         {
             id: 4,
             title: "Headphones",
             discount: 25,
-            img: "https://i.imgur.com/rM7f80E.png",
+            img: headphonesImg,
         },
         {
             id: 5,
             title: "Canon cameras",
             discount: 25,
-            img: "https://i.imgur.com/f7R98D6.png",
+            img: cameraImg,
         },
     ];
 

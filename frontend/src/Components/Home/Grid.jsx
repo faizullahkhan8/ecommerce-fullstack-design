@@ -3,10 +3,10 @@ import React from "react";
 const Grid = ({ title, bannerImg, items }) => {
     return (
         <div className="max-w-7xl mx-auto">
-            <div className="flex bg-white border border-gray-200 rounded-md overflow-hidden min-h-[260px]">
+            <div className="flex bg-white border border-gray-200 rounded-md overflow-hidden min-h-65 max-sm:flex-col">
                 {/* Left Banner */}
                 <div
-                    className="w-[280px] p-6 bg-cover bg-center flex flex-col justify-between relative"
+                    className="w-70 p-6 bg-cover bg-center flex flex-col justify-between relative"
                     style={{ backgroundImage: `url(${bannerImg})` }}
                 >
                     <div>
@@ -20,7 +20,7 @@ const Grid = ({ title, bannerImg, items }) => {
                 </div>
 
                 {/* Right Grid */}
-                <div className="grow grid grid-cols-4 border-l border-gray-200">
+                <div className="grow grid grid-cols-4 max-sm:grid-cols-2 border-l border-gray-200">
                     {items.map((item, idx) => (
                         <div
                             key={idx}
@@ -50,7 +50,7 @@ const Grid = ({ title, bannerImg, items }) => {
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    className="h-18 w-18 object-contain transition-transform duration-200 hover:scale-105"
+                                    className="h-32 w-32 object-contain transition-transform duration-200 hover:scale-105"
                                 />
                             </div>
                         </div>

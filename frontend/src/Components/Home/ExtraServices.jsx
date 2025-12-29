@@ -1,31 +1,35 @@
 import React from "react";
 import { Search, Package, Send, ShieldCheck } from "lucide-react";
 import ServiceCard from "../ServiceCard";
+import macbook from "../../assets/images/macbook.png";
+import paint from "../../assets/images/paint.png";
+import phone from "../../assets/images/phone.png";
+import camera from "../../assets/images/camera.png";
 
 const ExtraServices = () => {
     const services = [
         {
             id: 1,
             title: "Source from Industry Hubs",
-            image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
+            image: macbook,
             icon: Search,
         },
         {
             id: 2,
             title: "Customize Your Products",
-            image: "https://images.unsplash.com/photo-1524292332606-23128325408d?auto=format&fit=crop&q=80&w=800",
+            image: paint,
             icon: Package,
         },
         {
             id: 3,
             title: "Fast, reliable shipping by ocean or air",
-            image: "https://images.unsplash.com/photo-1494412574743-0192490781b1?auto=format&fit=crop&q=80&w=800",
+            image: phone,
             icon: Send,
         },
         {
             id: 4,
             title: "Product monitoring and inspection",
-            image: "https://images.unsplash.com/photo-1553413077-190dd3062649?auto=format&fit=crop&q=80&w=800",
+            image: camera,
             icon: ShieldCheck,
         },
     ];
