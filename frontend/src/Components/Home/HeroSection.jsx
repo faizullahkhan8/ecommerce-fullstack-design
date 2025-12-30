@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../UI/Button";
-import avatarImg from "../../assets/images/phone.png";
+import BannerImage from "../../assets/images/phone.png";
 import laptop from "../../assets/images/laptop.png";
 import tshirt from "../../assets/images/t-shirt.png";
 import sofas from "../../assets/images/sofas.png";
@@ -147,18 +147,16 @@ const HeroSection = () => {
                 {/* Right Panels */}
                 <div className="col-span-3 flex flex-col gap-4">
                     <div className="bg-[#e3f0ff] p-4 rounded-md flex flex-col gap-3 shadow-sm">
-                        <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                                <img
-                                    src={avatarImg}
-                                    alt="avatar"
-                                    className="w-full h-full object-cover"
-                                />
+                        <div className="bg-cover bg-center h-[350px] relative transition-transform duration-500 hover:scale-[1.01]" style={{ backgroundImage: `url(${BannerImage})` }}>
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex flex-col justify-center px-12 text-white p-8">
+                                <h3 className="text-3xl font-light mb-2">Latest trending</h3>
+                                <h2 className="text-4xl font-bold mb-6">Electronic items</h2>
+                                <button className="bg-white text-gray-900 px-6 py-2.5 rounded-lg font-medium w-fit hover:bg-primary hover:text-white transition-all shadow-lg active:scale-95">Learn more</button>
                             </div>
-                            <p className="text-sm font-semibold text-gray-800 leading-tight">
-                                Hi, user <br /> let's get started
-                            </p>
                         </div>
+                        <p className="text-sm font-semibold text-gray-800 leading-tight">
+                            Hi, user <br /> let's get started
+                        </p>
                         <Button className="w-full text-sm">Join Now</Button>
                         <Button
                             variant="outline"

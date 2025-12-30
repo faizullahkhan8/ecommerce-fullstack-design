@@ -20,38 +20,15 @@ const Grid = ({ title, bannerImg, items }) => {
                 </div>
 
                 {/* Right Grid */}
-                <div className="grow grid grid-cols-4 max-sm:grid-cols-2 border-l border-gray-200">
+                <div className="flex-1 grid grid-cols-2 md:grid-cols-4">
                     {items.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className="
-                                relative h-36
-                                px-3 py-2
-                                border-r border-b border-gray-200
-                                last:border-r-0
-                                bg-white
-                                cursor-pointer
-                                hover:bg-[#fafbfc]
-                                transition-all duration-200
-                            "
-                        >
-                            {/* Text */}
-                            <div className="absolute top-2 left-3 right-3 z-10">
-                                <p className="text-sm font-medium text-gray-800 truncate">
-                                    {item.name}
-                                </p>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    From USD {item.price}
-                                </p>
+                        <div key={idx} className="border border-gray-200 border-l-0 p-4 relative group bg-white hover:shadow-lg transition-shadow duration-300 z-0 hover:z-10">
+                            <div className="mb-2">
+                                <h4 className="text-gray-900 font-medium mb-1 group-hover:text-primary transition-colors">{item.title || item.name}</h4>
+                                <p className="text-gray-400 text-xs">From <span className="text-gray-600">USD {item.price}</span></p>
                             </div>
-
-                            {/* Image */}
-                            <div className="absolute bottom-2 right-3">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="h-32 w-32 object-contain transition-transform duration-200 hover:scale-105"
-                                />
+                            <div className="flex justify-end mt-4">
+                                <img src={item.img || item.image} alt={item.title || item.name} className="w-20 h-20 object-contain group-hover:scale-110 transition-transform duration-300"/>
                             </div>
                         </div>
                     ))}
