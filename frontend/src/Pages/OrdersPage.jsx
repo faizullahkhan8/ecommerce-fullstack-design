@@ -6,7 +6,7 @@ const OrdersPage = () => {
 
     return (
         <div className="container py-6">
-            <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+            <h1 className="text-2xl font-bold my-6">My Orders</h1>
             {orders.length === 0 ? (
                  <div className="text-center py-20 bg-white border border-gray-200 rounded-lg">
                     <p className="text-gray-500 mb-4">You have no orders yet.</p>

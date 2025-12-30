@@ -8,8 +8,8 @@ const CartPage = () => {
     const { removeItem, updateItemQuantity } = useCart();
 
     return (
-        <div className="container py-6">
-            <h1 className="text-xl font-bold mb-6">My cart ({items.length})</h1>
+        <div className="container mx-auto px-4 py-8 md:py-12">
+            <h1 className="text-xl font-bold my-6">My cart ({items.length})</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 <div className="lg:col-span-3">

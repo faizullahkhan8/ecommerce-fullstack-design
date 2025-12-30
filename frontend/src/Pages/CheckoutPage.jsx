@@ -47,7 +47,7 @@ const CheckoutPage = () => {
     };
 
     return (
-        <div className="container py-8">
+        <div className="container mx-auto px-4 py-8 md:py-12">
             <h2 className="text-2xl font-bold mb-6">Checkout</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Shipping Form */}

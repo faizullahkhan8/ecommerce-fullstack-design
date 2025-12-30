@@ -5,6 +5,7 @@ import RequestQuote from "../Components/Home/RequestQuote";
 import RecommendedItems from "../Components/Home/RecommendedItems";
 import ExtraServices from "../Components/Home/ExtraServices";
 import NewsLetter from "../Components/Home/NewsLetter";
+import SuppliersByRegion from "../Components/Home/SuppliersByRegion";
 
 // Import images for Grid Mock Data
 // Using paths relative to Components/Home or import logic
@@ -37,28 +38,71 @@ const electronicsItems = [
 
 const HomePage = () => {
     return (
-        <div className="bg-gray-50 min-h-screen pb-12">
-            <div className="container py-6 space-y-6">
-                <HeroSection />
-                <DealsAndOffers />
-                
-                <Grid 
-                    title="Home and outdoor" 
-                    bannerImg="https://picsum.photos/id/111/300/600" 
-                    items={homeOutdoorItems} 
-                />
-                
-                <Grid 
-                    title="Consumer electronics and gadgets" 
-                    bannerImg="https://picsum.photos/id/112/300/600" 
-                    items={electronicsItems} 
-                />
-                
+        <div className="bg-gray-50">
+            {/* Hero Section - Full width */}
+            <HeroSection />
+            
+            {/* Deals and Offers Section */}
+            <section className="py-8 md:py-12 bg-white">
+                <div className="container mx-auto px-4">
+                    <DealsAndOffers />
+                </div>
+            </section>
+            
+            {/* Home & Outdoor Grid */}
+            <section className="py-8 md:py-12 bg-gray-50">
+                <div className="container mx-auto px-4">
+                    <Grid 
+                        title="Home and outdoor" 
+                        bannerImg="https://picsum.photos/id/111/300/600" 
+                        items={homeOutdoorItems} 
+                    />
+                </div>
+            </section>
+            
+            {/* Consumer Electronics Grid */}
+            <section className="py-8 md:py-12 bg-white">
+                <div className="container mx-auto px-4">
+                    <Grid 
+                        title="Consumer electronics and gadgets" 
+                        bannerImg="https://picsum.photos/id/112/300/600" 
+                        items={electronicsItems} 
+                    />
+                </div>
+            </section>
+            
+            {/* Request Quote Section - Full width background */}
+            <section className="py-12 md:py-16">
                 <RequestQuote />
-                <RecommendedItems />
-                <ExtraServices />
-                <NewsLetter />
-            </div>
+            </section>
+            
+            {/* Recommended Items Section */}
+            <section className="py-8 md:py-12 bg-white">
+                <div className="container mx-auto px-4">
+                    <RecommendedItems />
+                </div>
+            </section>
+            
+            {/* Extra Services Section */}
+            <section className="py-8 md:py-12 bg-gray-50">
+                <div className="container mx-auto px-4">
+                    <ExtraServices />
+                </div>
+            </section>
+            
+            {/* Suppliers by Region */}
+            <section className="py-8 md:py-12 bg-white">
+                <div className="container mx-auto px-4">
+                    <SuppliersByRegion />
+                </div>
+            </section>
+            
+            {/* Newsletter Section */}
+            <section className="py-12 md:py-16 bg-gray-50">
+                <div className="container mx-auto px-4">
+                    <NewsLetter />
+                </div>
+            </section>
         </div>
     );
 };
