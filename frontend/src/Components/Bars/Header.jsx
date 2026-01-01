@@ -10,7 +10,7 @@
  * - Enhanced navigation bar with modern design
  */
 
-import { 
+import {
     Search, User, ShoppingCart, Heart, Menu, MessageSquare, ChevronDown,
     X, Home, List, Package, Globe, Headphones, Building
 } from "lucide-react";
@@ -44,16 +44,16 @@ const Header = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
     const { signOut } = useAuth();
     const navigate = useNavigate();
-    
+
     // Trigger search when debounced value changes
     useEffect(() => {
         if (debouncedSearch !== undefined) {
-             if (debouncedSearch) {
+            if (debouncedSearch) {
                 navigate(`/products?search=${encodeURIComponent(debouncedSearch)}`);
-             } else if (searchQuery === "") {
+            } else if (searchQuery === "") {
                 // If user cleared search manually
                 // Optional: navigate('/products') to clear filter
-             }
+            }
         }
     }, [debouncedSearch]);
 
@@ -75,25 +75,25 @@ const Header = () => {
                 {/* Search Bar - Desktop */}
                 <div className="hidden md:flex flex-1 max-w-2xl">
                     <div className="flex w-full border border-primary rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-md transition-all">
-                         <input 
-                            type="text" 
-                            placeholder="Search for products, brands, and more..." 
+                        <input
+                            type="text"
+                            placeholder="Search for products, brands, and more..."
                             className="flex-1 px-4 py-2.5 outline-none text-gray-700 placeholder:text-gray-400"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                         <div className="border-l border-gray-200 relative">
-                             <select className="appearance-none bg-gray-50 px-4 py-2.5 pr-8 outline-none text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors h-full font-medium">
-                                 <option>All category</option>
-                                 <option>Electronics</option>
-                                 <option>Clothes</option>
-                                 <option>Home & Garden</option>
-                                 <option>Sports</option>
-                             </select>
-                         </div>
-                         <button className="bg-primary text-white px-6 py-2.5 font-medium hover:bg-primary-dark transition-all active:scale-95">
+                        <div className="border-l border-gray-200 relative">
+                            <select className="appearance-none bg-gray-50 px-4 py-2.5 pr-8 outline-none text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors h-full font-medium">
+                                <option>All category</option>
+                                <option>Electronics</option>
+                                <option>Clothes</option>
+                                <option>Home & Garden</option>
+                                <option>Sports</option>
+                            </select>
+                        </div>
+                        <button className="bg-primary text-white px-6 py-2.5 font-medium hover:bg-primary-dark transition-all active:scale-95">
                             Search
-                         </button>
+                        </button>
                     </div>
                 </div>
 
@@ -111,119 +111,118 @@ const Header = () => {
                     <NavIcon to="/orders" icon={<Heart size={20} />} label="Orders" />
                     <NavIcon to="/cart" icon={<ShoppingCart size={20} />} label="My Cart" badge={cartCount} />
                 </div>
-                
+
                 {/* Mobile Menu Button */}
                 <button className="md:hidden text-gray-600 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                    <Menu size={24}/>
+                    <Menu size={24} />
                 </button>
             </div>
-            
+
             {/* Mobile Search Bar */}
-            <div className="md:hidden container pb-4">
-                 <div className="flex w-full border border-gray-300 rounded-lg overflow-hidden focus-within:border-primary transition-colors">
-                     <input 
-                        type="text" 
-                        placeholder="Search products..." 
+            <div className="md:hidden container py-2 h-16">
+                <div className="flex w-full border border-gray-300 rounded-lg overflow-hidden focus-within:border-primary transition-colors">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
                         className="flex-1 px-4 py-2 outline-none"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                     />
-                     <button className="bg-gray-100 px-4 py-2 hover:bg-gray-200 transition-colors">
-                        <Search size={20} className="text-gray-500"/>
-                     </button>
-                 </div>
+                    />
+                    <button className="bg-gray-100 px-4 py-2 hover:bg-gray-200 transition-colors">
+                        <Search size={20} className="text-gray-500" />
+                    </button>
+                </div>
             </div>
 
             {/* Enhanced Navigation Bar */}
-             <div className="border-t border-gray-200 hidden md:block bg-gradient-to-r from-gray-50 to-white">
-                 <div className="container py-3 flex items-center justify-between">
-                     {/* Left Navigation */}
-                     <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
-                         {/* All Categories Dropdown */}
-                         <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                             <Menu size={18} className="group-hover:scale-110 transition-transform" />
-                             <span>All category</span>
-                             <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                         </div>
-                         
-                         {/* Navigation Links */}
-                         <Link 
-                            to="/products" 
+            <div className="border-t border-gray-200 hidden md:block bg-gradient-to-r from-gray-50 to-white">
+                <div className="container py-3 flex items-center justify-between">
+                    {/* Left Navigation */}
+                    <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
+                        {/* All Categories Dropdown */}
+                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
+                            <Menu size={18} className="group-hover:scale-110 transition-transform" />
+                            <span>All category</span>
+                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
+                        </div>
+
+                        {/* Navigation Links */}
+                        <Link
+                            to="/products"
                             className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all relative group"
-                         >
+                        >
                             Hot offers
                             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                                 HOT
                             </span>
-                         </Link>
-                         
-                         <Link 
-                            to="/products" 
+                        </Link>
+
+                        <Link
+                            to="/products"
                             className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                         >
+                        >
                             Gift boxes
-                         </Link>
-                         
-                         <Link 
-                            to="/products" 
+                        </Link>
+
+                        <Link
+                            to="/products"
                             className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                         >
+                        >
                             Projects
-                         </Link>
-                         
-                         <Link 
-                            to="/products" 
+                        </Link>
+
+                        <Link
+                            to="/products"
                             className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                         >
+                        >
                             Menu item
-                         </Link>
-                         
-                         {/* Help Dropdown */}
-                         <div className="relative group">
+                        </Link>
+
+                        {/* Help Dropdown */}
+                        <div className="relative group">
                             <div className="flex items-center gap-1 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all">
                                 <span>Help</span>
                                 <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
                             </div>
-                         </div>
-                     </div>
-                     
-                     {/* Right Settings */}
-                     <div className="flex items-center gap-4 text-sm font-medium text-gray-600">
-                         {/* Language & Currency */}
-                         <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                             <span>English, USD</span>
-                             <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                         </div>
-                         
-                         {/* Ship To */}
-                         <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                             <span>Ship to</span>
-                             <span className="text-lg">🇩🇪</span>
-                             <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                         </div>
-                     </div>
-                 </div>
-             </div>
+                        </div>
+                    </div>
+
+                    {/* Right Settings */}
+                    <div className="flex items-center gap-4 text-sm font-medium text-gray-600">
+                        {/* Language & Currency */}
+                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
+                            <span>English, USD</span>
+                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
+                        </div>
+
+                        {/* Ship To */}
+                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
+                            <span>Ship to</span>
+                            <span className="text-lg">🇩🇪</span>
+                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {/* Mobile Sidebar Navigation */}
             <>
                 {/* Overlay */}
                 {isMenuOpen && (
-                    <div 
+                    <div
                         className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
                         onClick={() => setIsMenuOpen(false)}
                     />
                 )}
-                
+
                 {/* Sidebar */}
-                <div className={`fixed top-0 left-0 h-full w-80 bg-white z-50 md:hidden transform transition-transform duration-300 ease-in-out shadow-2xl ${
-                    isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-                }`}>
+                <div className={`fixed top-0 right-0 h-full w-80 bg-white z-50 md:hidden transform transition-transform duration-300 ease-in-out shadow-2xl ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                    }`}>
                     {/* Sidebar Content */}
                     <div className="flex flex-col h-full">
                         {/* Close Button */}
                         <div className="flex justify-end p-4 border-b border-gray-200">
-                            <button 
+                            <button
                                 onClick={() => setIsMenuOpen(false)}
                                 className="text-gray-500 hover:text-gray-700 transition-colors"
                             >
@@ -243,7 +242,7 @@ const Header = () => {
                                         {isAuthenticated ? (
                                             <div>
                                                 <p className="font-medium text-gray-900">User</p>
-                                                <button 
+                                                <button
                                                     onClick={() => {
                                                         signOut();
                                                         setIsMenuOpen(false);
@@ -254,8 +253,8 @@ const Header = () => {
                                                 </button>
                                             </div>
                                         ) : (
-                                            <Link 
-                                                to="/login" 
+                                            <Link
+                                                to="/login"
                                                 onClick={() => setIsMenuOpen(false)}
                                                 className="text-gray-900 font-medium"
                                             >
@@ -268,44 +267,44 @@ const Header = () => {
 
                             {/* Main Navigation */}
                             <div className="py-2">
-                                <Link 
-                                    to="/" 
+                                <Link
+                                    to="/"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                                 >
                                     <Home size={20} className="text-gray-400" />
                                     <span className="font-medium">Home</span>
                                 </Link>
-                                
-                                <Link 
-                                    to="/products" 
+
+                                <Link
+                                    to="/products"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                                 >
                                     <List size={20} className="text-gray-400" />
                                     <span className="font-medium">Categories</span>
                                 </Link>
-                                
-                                <Link 
-                                    to="/wishlist" 
+
+                                <Link
+                                    to="/wishlist"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                                 >
                                     <Heart size={20} className="text-gray-400" />
                                     <span className="font-medium">Favorites</span>
                                 </Link>
-                                
-                                <Link 
-                                    to="/orders" 
+
+                                <Link
+                                    to="/orders"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                                 >
                                     <Package size={20} className="text-gray-400" />
                                     <span className="font-medium">My orders</span>
                                 </Link>
-                                
-                                <Link 
-                                    to="/cart" 
+
+                                <Link
+                                    to="/cart"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                                 >
@@ -328,12 +327,12 @@ const Header = () => {
                                     <Globe size={20} className="text-gray-400" />
                                     <span className="font-medium">English | USD</span>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
                                     <Headphones size={20} className="text-gray-400" />
                                     <span className="font-medium">Contact us</span>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
                                     <Building size={20} className="text-gray-400" />
                                     <span className="font-medium">About</span>
