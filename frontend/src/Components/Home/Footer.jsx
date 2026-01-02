@@ -39,7 +39,7 @@ const Footer = () => {
     return (
         <footer className="w-full font-sans">
             <div className="bg-white py-8 sm:py-10 px-4 sm:px-6 md:px-8 lg:px-12 border-b border-gray-200">
-                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10">
+                <div className="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10">
                     <div className="max-w-xs">
                         <div className="flex items-center gap-2 mb-4">
                             <div className="bg-[#127FFF] p-2 rounded-md flex items-center justify-center">
@@ -109,9 +109,9 @@ const Footer = () => {
             </div>
 
             <div className="bg-[#EFF2F4] py-4 sm:py-5 px-4 sm:px-6 md:px-8 lg:px-12">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
                     <p className="text-[#606060] text-xs sm:text-sm">
-                        © 2023 Ecommerce.
+                        © 2026 Ecommerce.
                     </p>
                     <div className="flex items-center gap-2 text-[#606060] cursor-pointer hover:text-[#127FFF] transition-colors">
                         <img

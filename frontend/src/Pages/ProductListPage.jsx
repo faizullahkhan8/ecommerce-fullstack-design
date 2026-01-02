@@ -5,16 +5,16 @@ import SidebarFilter from "../Components/SidebarFilter";
 import ProductCard from "../Components/ProductCard";
 import ProductListItem from "../Components/ProductListItem";
 import Pagination from "../Components/Pagination";
-import { useProduct } from "../hooks/useProduct";
-import { useSelector } from "react-redux";
 import Breadcrumb from "../Components/Breadcrumb";
 
 const ProductListPage = () => {
     const [viewMode, setViewMode] = useState("grid");
-    const { fetchProducts, loading } = useProduct();
-    const { products, pagination } = useSelector(state => state.product);
     const [searchParams, setSearchParams] = useSearchParams();
-    
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [pagination, setPagination] = useState(null);
+
+
     // Initial Filter State
     const [filters, setFilters] = useState({
         category: searchParams.get("category") || "",
@@ -26,18 +26,17 @@ const ProductListPage = () => {
         condition: "",
     });
 
-    // Sync URL params with local state on load
+    //
     useEffect(() => {
         const category = searchParams.get("category");
-        if(category) {
+        if (category) {
             setFilters(prev => ({ ...prev, category }));
         }
     }, [searchParams]);
-    
+
     const page = parseInt(searchParams.get("page") || "1");
     const search = searchParams.get("search") || "";
-    
-    // Fetch products when filters, page, or search changes
+
     useEffect(() => {
         const params = {
             page,
@@ -47,13 +46,11 @@ const ProductListPage = () => {
             brands: filters.brands.join(','),
             features: filters.features.join(',')
         };
-        fetchProducts(params);
     }, [page, search, filters]);
 
     const handleFilterChange = (newFilters) => {
         setFilters(prev => {
             const updated = { ...prev, ...newFilters };
-            // Reset to page 1 on filter change
             setSearchParams(prevParams => {
                 prevParams.set("page", "1");
                 return prevParams;
@@ -92,7 +89,6 @@ const ProductListPage = () => {
         ...(filters.category ? [{ label: filters.category }] : [])
     ];
 
-    // Helper to remove individual active filter
     const removeFilter = (key, value = null) => {
         if (Array.isArray(filters[key])) {
             handleFilterChange({ [key]: filters[key].filter(item => item !== value) });
@@ -108,52 +104,52 @@ const ProductListPage = () => {
 
             <div className="flex flex-col lg:flex-row gap-8 items-start">
                 <SidebarFilter filters={filters} onFilterChange={handleFilterChange} />
-                
+
                 <div className="flex-1">
                     {/* Top Bar */}
                     <div className="bg-white border border-gray-200 rounded-lg p-3 px-4 mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div className="text-sm">
-                             {products?.length || 0} items <span className="font-bold">found</span>
+                            {products?.length || 0} items <span className="font-bold">found</span>
                         </div>
                         <div className="flex items-center gap-3">
-                             <div className="flex border border-gray-300 rounded overflow-hidden">
-                                 <button 
+                            <div className="flex border border-gray-300 rounded overflow-hidden">
+                                <button
                                     className={`p-1.5 ${viewMode === 'list' ? 'bg-gray-200 text-black' : 'bg-white text-gray-500'}`}
                                     onClick={() => setViewMode('grid')}
-                                 >
-                                     <LayoutGrid size={20} />
-                                 </button>
-                                 <button 
+                                >
+                                    <LayoutGrid size={20} />
+                                </button>
+                                <button
                                     className={`p-1.5 ${viewMode === 'list' ? 'bg-white text-gray-500' : 'bg-gray-200 text-black'}`}
                                     onClick={() => setViewMode('list')}
-                                 >
-                                     <List size={20} />
-                                 </button>
-                             </div>
+                                >
+                                    <List size={20} />
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     {/* Active Filters (Chips) */}
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-wrap">
-                         {filters.category && (
-                             <span className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
+                        {filters.category && (
+                            <span className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
                                 {filters.category} <X size={14} className="cursor-pointer" onClick={() => removeFilter('category')} />
-                             </span>
-                         )}
-                         {filters.brands.map(brand => (
-                             <span key={brand} className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
+                            </span>
+                        )}
+                        {filters.brands.map(brand => (
+                            <span key={brand} className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
                                 {brand} <X size={14} className="cursor-pointer" onClick={() => removeFilter('brands', brand)} />
-                             </span>
-                         ))}
-                         {filters.maxPrice && (
-                             <span className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
+                            </span>
+                        ))}
+                        {filters.maxPrice && (
+                            <span className="flex items-center gap-1 bg-white border border-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
                                 Price: {filters.minPrice || 0}-{filters.maxPrice} <X size={14} className="cursor-pointer" onClick={() => removeFilter('maxPrice')} />
-                             </span>
-                         )}
-                         
-                         {(filters.category || filters.brands.length > 0 || filters.maxPrice || filters.rating || filters.condition) && (
+                            </span>
+                        )}
+
+                        {(filters.category || filters.brands.length > 0 || filters.maxPrice || filters.rating || filters.condition) && (
                             <button onClick={clearAllFilters} className="text-primary text-sm font-medium hover:underline ml-2">Clear all filter</button>
-                         )}
+                        )}
                     </div>
 
                     {/* Product Grid/List */}
@@ -162,13 +158,13 @@ const ProductListPage = () => {
                     ) : (
                         <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col gap-4"}>
                             {products?.map(product => (
-                                viewMode === 'grid' 
+                                viewMode === 'grid'
                                     ? <ProductCard key={product.id} product={product} />
                                     : <ProductListItem key={product.id} product={product} />
                             ))}
                         </div>
                     )}
-                    
+
                     {!loading && products?.length === 0 && (
                         <div className="text-center py-20 bg-gray-50 rounded-lg border border-dashed border-gray-300">
                             <p className="text-gray-500 text-lg">No products found matching your filters.</p>
@@ -176,10 +172,10 @@ const ProductListPage = () => {
                         </div>
                     )}
 
-                    <Pagination 
-                        currentPage={pagination?.currentPage || 1} 
-                        totalPages={pagination?.totalPages || 1} 
-                        onPageChange={handlePageChange} 
+                    <Pagination
+                        currentPage={pagination?.currentPage || 1}
+                        totalPages={pagination?.totalPages || 1}
+                        onPageChange={handlePageChange}
                     />
                 </div>
             </div>

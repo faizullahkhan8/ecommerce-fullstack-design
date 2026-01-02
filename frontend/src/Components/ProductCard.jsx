@@ -1,22 +1,16 @@
 import { Star, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
-import { useWishlist } from "../hooks/useWishlist";
+import { Link } from "react-router-dom"
 
 const ProductCard = ({ product }) => {
-    const { addItem } = useCart();
-    const { toggle } = useWishlist();
 
     const handleAddToCart = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        addItem(product);
     };
 
     const handleWishlist = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggle(product);
     };
 
     let originalPrice = null;

@@ -1,17 +1,12 @@
 import ProductCard from "../ProductCard";
-import { useProduct } from "../../hooks/useProduct";
 import { useEffect, useState } from "react";
 
 const RecommendedItems = () => {
     const [products, setProducts] = useState([]);
-    const { fetchProducts, loading } = useProduct();
 
     useEffect(() => {
         (async () => {
-            const response = await fetchProducts();
-            if (response) {
-                setProducts(response);
-            }
+
         })();
     }, []);
 

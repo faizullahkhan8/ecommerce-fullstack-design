@@ -1,11 +1,9 @@
-import { ArrowLeft, Lock, MessageSquare, Truck } from "lucide-react";
-import { useSelector } from "react-redux";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
+import { useState } from "react";
 
 const CartPage = () => {
-    const { items, totalAmount } = useSelector(state => state.cart);
-    const { removeItem, updateItemQuantity } = useCart();
+    const [items, setItems] = useState([]);
 
     return (
         <div className="container mx-auto px-4 py-8 md:py-12">
@@ -18,7 +16,7 @@ const CartPage = () => {
                         {items.length === 0 ? (
                             <div className="text-center py-8 bg-white border border-gray-200 rounded-lg">Your cart is empty</div>
                         ) : (
-                             items.map(item => (
+                            items.map(item => (
                                 <div key={item.id} className="bg-white border border-gray-200 rounded-lg p-4 flex gap-4 items-start sm:items-center">
                                     <div className="bg-gray-100 rounded border border-gray-200 w-20 h-20 flex-shrink-0 flex items-center justify-center p-1">
                                         <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
@@ -29,7 +27,7 @@ const CartPage = () => {
                                             <span className="font-bold text-gray-900">${item.price.toFixed(2)}</span>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <button 
+                                            <button
                                                 onClick={() => removeItem(item.id)}
                                                 className="text-red-500 border border-gray-200 bg-white px-3 py-1 rounded text-sm font-medium hover:bg-red-50 hover:border-red-200 transition-colors"
                                             >
@@ -38,20 +36,20 @@ const CartPage = () => {
                                         </div>
                                     </div>
                                     <div className="hidden sm:block">
-                                            <select 
-                                                className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
-                                                value={`Qty: ${item.quantity}`} 
-                                                onChange={(e) => {
-                                                    const qty = parseInt(e.target.value.split(' ')[1]);
-                                                    updateItemQuantity(item.id, qty);
-                                                }}
-                                            >
-                                                <option>Qty: 1</option>
-                                                <option>Qty: 2</option>
-                                                <option>Qty: 3</option>
-                                                <option>Qty: 4</option>
-                                                <option>Qty: 5</option>
-                                            </select>
+                                        <select
+                                            className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
+                                            value={`Qty: ${item.quantity}`}
+                                            onChange={(e) => {
+                                                const qty = parseInt(e.target.value.split(' ')[1]);
+                                                updateItemQuantity(item.id, qty);
+                                            }}
+                                        >
+                                            <option>Qty: 1</option>
+                                            <option>Qty: 2</option>
+                                            <option>Qty: 3</option>
+                                            <option>Qty: 4</option>
+                                            <option>Qty: 5</option>
+                                        </select>
                                     </div>
                                 </div>
                             ))
@@ -66,17 +64,17 @@ const CartPage = () => {
                 </div>
 
                 <div className="lg:col-span-1">
-                     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                         <div className="space-y-3 border-b border-gray-200 pb-4 mb-4 text-gray-600">
-                             <div className="flex justify-between font-bold text-xl text-gray-900 mb-6">
-                                 <span>Total:</span>
-                                 <span>${totalAmount.toFixed(2)}</span>
-                             </div>
-                         </div>
-                         <Link to="/checkout" className="block w-full bg-green-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-green-600 transition-colors shadow-sm mb-4 text-center">
-                             Checkout
-                         </Link>
-                     </div>
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div className="space-y-3 border-b border-gray-200 pb-4 mb-4 text-gray-600">
+                            <div className="flex justify-between font-bold text-xl text-gray-900 mb-6">
+                                <span>Total:</span>
+                                <span>0.0</span>
+                            </div>
+                        </div>
+                        <Link to="/checkout" className="block w-full bg-green-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-green-600 transition-colors shadow-sm mb-4 text-center">
+                            Checkout
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

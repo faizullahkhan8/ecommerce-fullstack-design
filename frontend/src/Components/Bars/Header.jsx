@@ -1,31 +1,22 @@
-/**
- * Header Component
- * Main navigation header with search, cart, and user actions
- * 
- * Features:
- * - Sticky header with shadow on scroll
- * - Search bar with category filter
- * - Cart with badge counter
- * - Authentication state handling
- * - Enhanced navigation bar with modern design
- */
-
 import {
-    Search, User, ShoppingCart, Heart, Menu, MessageSquare, ChevronDown,
-    X, Home, List, Package, Globe, Headphones, Building
-} from "lucide-react";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useAuth } from "../../hooks/useAuth";
-import { useDebounce } from "../../hooks/useDebounce";
+    Search, User, ShoppingCart, Heart, Menu, MessageSquare,
+    LogOut,
+    LayoutDashboard,
 
-// Reusable icon component for navigation actions
+} from "lucide-react";
+import { useState, useEffect, use } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLogoutUser } from "../../api/hooks/user.api";
+import { logout } from "../../store/slices/authSlice";
+
+import MobileSideBar from "./MobileSideBar";
+import NavigationBar from "./NavigationBar.jsx";
+
 const NavIcon = ({ to, icon, label, badge }) => (
     <Link to={to} className="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors relative group">
         <div className="relative">
             {icon}
-            {/* Badge for cart count */}
             {badge > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">
                     {badge}
@@ -38,26 +29,39 @@ const NavIcon = ({ to, icon, label, badge }) => (
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userDropDownOpen, setUserDropDownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const debouncedSearch = useDebounce(searchQuery, 800); // 800ms debounce for search
     const cartItems = useSelector(state => state.cart.items);
-    const { isAuthenticated } = useSelector(state => state.auth);
-    const { signOut } = useAuth();
+    const { isAuthenticated, user } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
-    // Trigger search when debounced value changes
+    const role = user?.role;
+
+    const dispatch = useDispatch();
+
+    const { logoutUser, loading: logoutLoading } = useLogoutUser();
+
     useEffect(() => {
-        if (debouncedSearch !== undefined) {
-            if (debouncedSearch) {
-                navigate(`/products?search=${encodeURIComponent(debouncedSearch)}`);
+        if (searchQuery !== undefined) {
+            if (searchQuery) {
+                navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
             } else if (searchQuery === "") {
                 // If user cleared search manually
                 // Optional: navigate('/products') to clear filter
             }
         }
-    }, [debouncedSearch]);
+    }, [searchQuery]);
 
-    // Calculate total cart items
+
+    const handleSignOut = async () => {
+        const response = await logoutUser();
+        if (response.success) {
+            dispatch(logout());
+            setUserDropDownOpen(false);
+            navigate("/");
+        }
+    }
+
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     return (
@@ -98,18 +102,38 @@ const Header = () => {
                 </div>
 
                 {/* User Actions - Desktop */}
-                <div className="hidden md:flex items-center gap-6">
+                <div className="hidden md:flex items-center gap-3 relative">
+                    <NavIcon to="/messages" icon={<MessageSquare size={18} />} label="Message" />
+                    <NavIcon to="/orders" icon={<Heart size={18} />} label="Orders" />
+                    <NavIcon to="/cart" icon={<ShoppingCart size={18} />} label="My Cart" badge={cartCount} />
                     {isAuthenticated ? (
-                        <div className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer hover:text-primary transition-colors group" onClick={signOut}>
-                            <User size={20} className="group-hover:scale-110 transition-transform" />
-                            <span className="text-xs">Sign Out</span>
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 hover:border-primary transition-colors bg-gray-100" onClick={() => setUserDropDownOpen(!userDropDownOpen)}>
+                            <User className="text-gray-500" />
                         </div>
                     ) : (
-                        <NavIcon to="/login" icon={<User size={20} />} label="Sign In" />
+                        <div className="flex gap-2">
+                            <Link to="/login" className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md">Login</Link>
+                            <Link to="/register" className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md">Register</Link>
+                        </div>
                     )}
-                    <NavIcon to="/messages" icon={<MessageSquare size={20} />} label="Message" />
-                    <NavIcon to="/orders" icon={<Heart size={20} />} label="Orders" />
-                    <NavIcon to="/cart" icon={<ShoppingCart size={20} />} label="My Cart" badge={cartCount} />
+                    {
+                        userDropDownOpen && <div className="flex flex-col gap-2 absolute top-full right-0 w-max rounded-md bg-white shadow-md p-2 border border-gray-200">
+                            <Link to="/profile" className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+                                <User size={16} />
+                                <span className="text-sm">Profile</span>
+                            </Link>
+                            {role === "admin" && (
+                                <Link to="/admin-dashboard" className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+                                    <LayoutDashboard size={16} />
+                                    <span className="text-sm">Admin Dashboard</span>
+                                </Link>
+                            )}
+                            <div onClick={handleSignOut} className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer text-red-500">
+                                <LogOut size={16} />
+                                <span className="text-sm">Logout</span>
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -135,229 +159,10 @@ const Header = () => {
             </div>
 
             {/* Enhanced Navigation Bar */}
-            <div className="border-t border-gray-200 hidden md:block bg-gradient-to-r from-gray-50 to-white">
-                <div className="container py-3 flex items-center justify-between">
-                    {/* Left Navigation */}
-                    <div className="flex items-center gap-6 text-sm font-medium text-gray-700">
-                        {/* All Categories Dropdown */}
-                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                            <Menu size={18} className="group-hover:scale-110 transition-transform" />
-                            <span>All category</span>
-                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                        </div>
-
-                        {/* Navigation Links */}
-                        <Link
-                            to="/products"
-                            className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all relative group"
-                        >
-                            Hot offers
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                                HOT
-                            </span>
-                        </Link>
-
-                        <Link
-                            to="/products"
-                            className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                        >
-                            Gift boxes
-                        </Link>
-
-                        <Link
-                            to="/products"
-                            className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                        >
-                            Projects
-                        </Link>
-
-                        <Link
-                            to="/products"
-                            className="px-3 py-1.5 hover:text-primary hover:bg-primary/5 rounded-md transition-all"
-                        >
-                            Menu item
-                        </Link>
-
-                        {/* Help Dropdown */}
-                        <div className="relative group">
-                            <div className="flex items-center gap-1 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all">
-                                <span>Help</span>
-                                <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Settings */}
-                    <div className="flex items-center gap-4 text-sm font-medium text-gray-600">
-                        {/* Language & Currency */}
-                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                            <span>English, USD</span>
-                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                        </div>
-
-                        {/* Ship To */}
-                        <div className="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:text-primary hover:bg-primary/5 rounded-md transition-all group">
-                            <span>Ship to</span>
-                            <span className="text-lg">🇩🇪</span>
-                            <ChevronDown size={16} className="text-gray-400 group-hover:text-primary transition-colors" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <NavigationBar />
 
             {/* Mobile Sidebar Navigation */}
-            <>
-                {/* Overlay */}
-                {isMenuOpen && (
-                    <div
-                        className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
-                        onClick={() => setIsMenuOpen(false)}
-                    />
-                )}
-
-                {/* Sidebar */}
-                <div className={`fixed top-0 right-0 h-full w-80 bg-white z-50 md:hidden transform transition-transform duration-300 ease-in-out shadow-2xl ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}>
-                    {/* Sidebar Content */}
-                    <div className="flex flex-col h-full">
-                        {/* Close Button */}
-                        <div className="flex justify-end p-4 border-b border-gray-200">
-                            <button
-                                onClick={() => setIsMenuOpen(false)}
-                                className="text-gray-500 hover:text-gray-700 transition-colors"
-                            >
-                                <X size={24} />
-                            </button>
-                        </div>
-
-                        {/* Scrollable Content */}
-                        <div className="flex-1 overflow-y-auto">
-                            {/* User Section */}
-                            <div className="p-4 border-b border-gray-200 bg-gray-50">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                        <User size={24} className="text-gray-400" />
-                                    </div>
-                                    <div>
-                                        {isAuthenticated ? (
-                                            <div>
-                                                <p className="font-medium text-gray-900">User</p>
-                                                <button
-                                                    onClick={() => {
-                                                        signOut();
-                                                        setIsMenuOpen(false);
-                                                    }}
-                                                    className="text-sm text-primary hover:underline"
-                                                >
-                                                    Sign out
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <Link
-                                                to="/login"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="text-gray-900 font-medium"
-                                            >
-                                                Sign in | Register
-                                            </Link>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Main Navigation */}
-                            <div className="py-2">
-                                <Link
-                                    to="/"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-                                >
-                                    <Home size={20} className="text-gray-400" />
-                                    <span className="font-medium">Home</span>
-                                </Link>
-
-                                <Link
-                                    to="/products"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-                                >
-                                    <List size={20} className="text-gray-400" />
-                                    <span className="font-medium">Categories</span>
-                                </Link>
-
-                                <Link
-                                    to="/wishlist"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-                                >
-                                    <Heart size={20} className="text-gray-400" />
-                                    <span className="font-medium">Favorites</span>
-                                </Link>
-
-                                <Link
-                                    to="/orders"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-                                >
-                                    <Package size={20} className="text-gray-400" />
-                                    <span className="font-medium">My orders</span>
-                                </Link>
-
-                                <Link
-                                    to="/cart"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-                                >
-                                    <ShoppingCart size={20} className="text-gray-400" />
-                                    <span className="font-medium">My cart</span>
-                                    {cartCount > 0 && (
-                                        <span className="ml-auto bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
-                                            {cartCount}
-                                        </span>
-                                    )}
-                                </Link>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="border-t border-gray-200 my-2"></div>
-
-                            {/* Settings & Info */}
-                            <div className="py-2">
-                                <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                    <Globe size={20} className="text-gray-400" />
-                                    <span className="font-medium">English | USD</span>
-                                </div>
-
-                                <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                    <Headphones size={20} className="text-gray-400" />
-                                    <span className="font-medium">Contact us</span>
-                                </div>
-
-                                <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                    <Building size={20} className="text-gray-400" />
-                                    <span className="font-medium">About</span>
-                                </div>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="border-t border-gray-200 my-2"></div>
-
-                            {/* Footer Links */}
-                            <div className="py-2 px-6 space-y-3">
-                                <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                    User agreement
-                                </div>
-                                <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                    Partnership
-                                </div>
-                                <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                    Privacy policy
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </>
+            <MobileSideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isAuthenticated={isAuthenticated} cartCount={cartCount} />
         </header>
     );
 };
