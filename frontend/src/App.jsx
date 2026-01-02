@@ -1,13 +1,3 @@
-/**
- * Main App Component
- * Handles all routing for the application
- * 
- * Performance Optimization:
- * - Uses lazy loading for all pages to reduce initial bundle size
- * - Only loads pages when user navigates to them
- * - Shows loading spinner while pages are being loaded
- */
-
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
