@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { getLocalUserModel } from "../config/localDb.js";
-import { generateToken, setCookie } from "../utils/jwt.js";
+import { generateToken, setCookie, verifyToken } from "../utils/jwt.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
 export const registerUser = asyncHandler(async (req, res, next) => {
@@ -145,5 +145,44 @@ export const updateUser = asyncHandler(async (req, res, next) => {
         success: true,
         message: "User updated successfully",
         user: updatedUser
+    })
+})
+
+export const getAccessToken = asyncHandler(async (req, res, next) => {
+    const UserModel = getLocalUserModel()
+
+    if (!UserModel) {
+        return next(new ErrorResponse("User model not initiated.", 404))
+    }
+
+    const refreshToken = req.cookies.refreshToken
+
+    if (!refreshToken) {
+        return next(new ErrorResponse("Session expired. Login again", 401))
+    }
+
+    const decoded = verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET)
+
+    if (!decoded) {
+        return next(new ErrorResponse("Session expired. Login again", 401))
+    }
+
+    const user = await UserModel.findById(decoded.id)
+
+    if (!user) {
+        return next(new ErrorResponse("User not found", 404))
+    }
+
+    const accessToken = generateToken(user, "1d", process.env.JWT_ACCESS_SECRET)
+
+    if (!accessToken) {
+        return next(new ErrorResponse("Access token not generated", 400))
+    }
+
+    setCookie(res, accessToken, 1000 * 60 * 60 * 24, "accessToken")
+
+    return res.status(200).json({
+        success: true,
+        message: "Access token generated successfully",
     })
 })

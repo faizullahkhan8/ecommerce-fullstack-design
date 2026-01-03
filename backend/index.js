@@ -3,22 +3,23 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectToDB } from "./config/localDb.js";
 import userRouter from "./routers/user.router.js";
+import productRouter from "./routers/product.router.js";
 import { errorHandler } from "./middlewares/ErrorHandler.js";
 import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
-
+app.use("/public", express.static("public"));
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser())
 app.use(cors({
     origin: ["http://localhost:5173"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
 
 app.use("/api/users", userRouter)
+app.use("/api/products", productRouter)
 
 app.use(errorHandler)
 connectToDB();

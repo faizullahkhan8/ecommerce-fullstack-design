@@ -7,109 +7,155 @@ import {
     Users,
     ShoppingCart,
     Layers,
-    Menu as MenuIcon,
+    ChevronRight,
 } from 'lucide-react';
 
-const AdminSidebar = ({ activeView, setActiveView }) => {
+const AdminSidebar = ({ searchParams, setSearchParams }) => {
+    const activeTab = searchParams.get('tab');
+
+    // Consistent styling variables to match ProductList
+    const colors = {
+        primary: '#3b82f6', // blue-500
+        activeBg: '#eff6ff', // blue-50
+        textMain: '#374151', // gray-700
+        textMuted: '#6b7280', // gray-500
+        border: '#e5e7eb', // gray-200
+    };
+
     return (
         <Sidebar
             backgroundColor="white"
             rootStyles={{
-                borderColor: '#E5E7EB',
-                height: '100%',
-                minHeight: 'max-content'
+                borderColor: colors.border,
+                height: '100vh',
+                position: 'sticky',
+                top: 0,
             }}
         >
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 h-[60px]">
-                <span className="font-bold text-xl text-primary">Admin Panel</span>
+            {/* Header - Matched height and padding to ProductList header */}
+            <div className="flex items-center px-6 border-b border-gray-100 h-[73px]">
+                <span className="font-bold text-xl tracking-tight text-gray-800">
+                    Admin<span className="text-blue-600">Panel</span>
+                </span>
             </div>
 
-            <Menu
-                menuItemStyles={{
-                    button: {
-                        '&:hover': {
-                            backgroundColor: '#EFF6FF', // blue-50
-                            color: '#0D6EFD', // primary blue roughly
+            <div className="py-4">
+                <Menu
+                    menuItemStyles={{
+                        button: ({ active }) => ({
+                            fontSize: '14px',
+                            fontWeight: active ? '600' : '400',
+                            color: active ? colors.primary : colors.textMain,
+                            backgroundColor: active ? colors.activeBg : 'transparent',
+                            paddingLeft: '24px',
+                            '&:hover': {
+                                backgroundColor: colors.activeBg,
+                                color: colors.primary,
+                                transition: 'all 0.2s ease',
+                            },
+                        }),
+                        icon: ({ active }) => ({
+                            color: active ? colors.primary : colors.textMuted,
+                        }),
+                        label: {
+                            lineHeight: '2',
                         },
-                    },
-                }}
-            >
-                <MenuItem
-                    icon={<LayoutDashboard size={20} />}
-                    onClick={() => setActiveView('dashboard')}
-                    active={activeView === 'dashboard'}
+                        subMenuContent: {
+                            backgroundColor: 'white',
+                        },
+                    }}
                 >
-                    Dashboard
-                </MenuItem>
+                    {/* Dashboard Section */}
+                    <MenuItem
+                        icon={<LayoutDashboard size={20} />}
+                        onClick={() => setSearchParams({ tab: 'dashboard' })}
+                        active={activeTab === 'dashboard'}
+                    >
+                        Dashboard
+                    </MenuItem>
 
-                <SubMenu label="Products" icon={<Package size={20} />}>
-                    <MenuItem
-                        icon={<ListIcon size={18} />}
-                        onClick={() => setActiveView('products-list')}
-                        active={activeView === 'products-list'}
-                    >
-                        List Products
-                    </MenuItem>
-                    <MenuItem
-                        icon={<Plus size={18} />}
-                        onClick={() => setActiveView('products-add')}
-                        active={activeView === 'products-add'}
-                    >
-                        Add Product
-                    </MenuItem>
-                </SubMenu>
+                    <div className="px-6 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                        Inventory
+                    </div>
 
-                <SubMenu label="Categories" icon={<Layers size={20} />}>
-                    <MenuItem
-                        icon={<ListIcon size={18} />}
-                        onClick={() => setActiveView('categories-list')}
-                        active={activeView === 'categories-list'}
+                    {/* Products Section */}
+                    <SubMenu
+                        label="Products"
+                        icon={<Package size={20} />}
+                        defaultOpen={activeTab?.includes('products')}
                     >
-                        List Categories
-                    </MenuItem>
-                    <MenuItem
-                        icon={<Plus size={18} />}
-                        onClick={() => setActiveView('categories-add')}
-                        active={activeView === 'categories-add'}
-                    >
-                        Add Category
-                    </MenuItem>
-                </SubMenu>
+                        <MenuItem
+                            icon={<ListIcon size={18} />}
+                            onClick={() => setSearchParams({ tab: 'products-list' })}
+                            active={activeTab === 'products-list'}
+                        >
+                            List Products
+                        </MenuItem>
+                        <MenuItem
+                            icon={<Plus size={18} />}
+                            onClick={() => setSearchParams({ tab: 'products-add' })}
+                            active={activeTab === 'products-add'}
+                        >
+                            Add Product
+                        </MenuItem>
+                    </SubMenu>
 
-                <SubMenu label="Orders" icon={<ShoppingCart size={20} />}>
-                    <MenuItem
-                        icon={<ListIcon size={18} />}
-                        onClick={() => setActiveView('orders-list')}
-                        active={activeView === 'orders-list'}
+                    {/* Categories Section */}
+                    <SubMenu
+                        label="Categories"
+                        icon={<Layers size={20} />}
+                        defaultOpen={activeTab?.includes('categories')}
                     >
-                        List Orders
-                    </MenuItem>
-                    <MenuItem
-                        icon={<Plus size={18} />}
-                        onClick={() => setActiveView('orders-add')}
-                        active={activeView === 'orders-add'}
-                    >
-                        Add Order
-                    </MenuItem>
-                </SubMenu>
+                        <MenuItem
+                            icon={<ListIcon size={18} />}
+                            onClick={() => setSearchParams({ tab: 'categories-list' })}
+                            active={activeTab === 'categories-list'}
+                        >
+                            List Categories
+                        </MenuItem>
+                        <MenuItem
+                            icon={<Plus size={18} />}
+                            onClick={() => setSearchParams({ tab: 'categories-add' })}
+                            active={activeTab === 'categories-add'}
+                        >
+                            Add Category
+                        </MenuItem>
+                    </SubMenu>
 
-                <SubMenu label="Users" icon={<Users size={20} />}>
-                    <MenuItem
-                        icon={<ListIcon size={18} />}
-                        onClick={() => setActiveView('users-list')}
-                        active={activeView === 'users-list'}
-                    >
-                        List Users
-                    </MenuItem>
-                    <MenuItem
-                        icon={<Plus size={18} />}
-                        onClick={() => setActiveView('users-add')}
-                        active={activeView === 'users-add'}
-                    >
-                        Add User
-                    </MenuItem>
-                </SubMenu>
-            </Menu>
+                    <div className="px-6 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-2">
+                        Management
+                    </div>
+
+                    {/* Orders Section */}
+                    <SubMenu label="Orders" icon={<ShoppingCart size={20} />}>
+                        <MenuItem
+                            icon={<ListIcon size={18} />}
+                            onClick={() => setSearchParams({ tab: 'orders-list' })}
+                            active={activeTab === 'orders-list'}
+                        >
+                            List Orders
+                        </MenuItem>
+                    </SubMenu>
+
+                    {/* Users Section */}
+                    <SubMenu label="Users" icon={<Users size={20} />}>
+                        <MenuItem
+                            icon={<ListIcon size={18} />}
+                            onClick={() => setSearchParams({ tab: 'users-list' })}
+                            active={activeTab === 'users-list'}
+                        >
+                            List Users
+                        </MenuItem>
+                        <MenuItem
+                            icon={<Plus size={18} />}
+                            onClick={() => setSearchParams({ tab: 'users-add' })}
+                            active={activeTab === 'users-add'}
+                        >
+                            Add User
+                        </MenuItem>
+                    </SubMenu>
+                </Menu>
+            </div>
         </Sidebar>
     );
 };

@@ -7,29 +7,30 @@ import { CategoryList, AddCategory } from '../Components/Admin/CategoryComponent
 import { UserList, AddUser } from '../Components/Admin/UserComponents';
 import { OrderList, AddOrder } from '../Components/Admin/OrderComponents';
 
+import { useSearchParams } from "react-router-dom"
+
 const AdminPage = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const [activeView, setActiveView] = useState('dashboard')
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const activeTab = searchParams.get('tab') || 'dashboard'
 
     return (
         <div className="container mx-auto px-4 py-8 md:py-12 flex max-sm:flex-col min-h-[80vh] bg-gray-50 text-sm">
             <AdminSidebar
-                collapsed={collapsed}
-                setCollapsed={setCollapsed}
-                activeView={activeView}
-                setActiveView={setActiveView}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
             />
 
             <main className="flex-1 overflow-x-hidden overflow-y-auto">
-                {activeView === 'dashboard' && <DashboardHome />}
-                {activeView === 'products-list' && <ProductList />}
-                {activeView === 'products-add' && <AddProduct />}
-                {activeView === 'categories-list' && <CategoryList />}
-                {activeView === 'categories-add' && <AddCategory />}
-                {activeView === 'users-list' && <UserList />}
-                {activeView === 'users-add' && <AddUser />}
-                {activeView === 'orders-list' && <OrderList />}
-                {activeView === 'orders-add' && <AddOrder />}
+                {activeTab === 'dashboard' && <DashboardHome />}
+                {activeTab === 'products-list' && <ProductList />}
+                {activeTab === 'products-add' && <AddProduct />}
+                {activeTab === 'categories-list' && <CategoryList />}
+                {activeTab === 'categories-add' && <AddCategory />}
+                {activeTab === 'users-list' && <UserList />}
+                {activeTab === 'users-add' && <AddUser />}
+                {activeTab === 'orders-list' && <OrderList />}
+                {activeTab === 'orders-add' && <AddOrder />}
             </main>
         </div>
     );

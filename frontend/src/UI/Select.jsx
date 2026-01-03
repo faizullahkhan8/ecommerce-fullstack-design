@@ -15,14 +15,14 @@ const Select = ({
     const selectedOption = options.find((opt) => opt.value === value);
 
     return (
-        <div className={clsx("relative h-full", className)}>
+        <div className={clsx("relative h-full max-w-max min-w-50", className)}>
             {/* Trigger */}
             <button
                 type="button"
                 disabled={disabled}
                 onClick={() => setOpen((prev) => !prev)}
                 className={clsx(
-                    "flex items-center justify-between h-full min-w-32.5",
+                    "flex items-center justify-between h-full min-w-50",
                     "px-4 py-2 bg-white border-gray-300",
                     "text-sm outline-none",
                     "hover:bg-gray-50 transition-colors",
@@ -46,7 +46,7 @@ const Select = ({
             {open && !disabled && (
                 <div
                     className={clsx(
-                        "absolute z-50 mt-1 right-0",
+                        "absolute z-50 mt-1 left-0",
                         "w-50 max-h-75",
                         "bg-white border border-gray-200 rounded-md",
                         "shadow-lg py-1 overflow-y-auto"
