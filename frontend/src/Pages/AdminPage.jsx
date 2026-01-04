@@ -1,11 +1,13 @@
-import { useState } from 'react';
 import AdminSidebar from '../Components/Admin/AdminSidebar.jsx';
 import DashboardHome from '../Components/Admin/DashboardHome';
 import ProductList from '../Components/Admin/ProductList';
 import AddProduct from '../Components/Admin/AddProduct';
-import { CategoryList, AddCategory } from '../Components/Admin/CategoryComponents';
-import { UserList, AddUser } from '../Components/Admin/UserComponents';
-import { OrderList, AddOrder } from '../Components/Admin/OrderComponents';
+import AddCategory from '../Components/Admin/AddCategory.jsx';
+import CategoryList from '../Components/Admin/CategoryList.jsx';
+// import UserList from '../Components/Admin/UserList';
+// import AddUser from '../Components/Admin/AddUser';
+// import OrderList from '../Components/Admin/OrderList';
+// import AddOrder from '../Components/Admin/AddOrder';
 
 import { useSearchParams } from "react-router-dom"
 
@@ -27,10 +29,10 @@ const AdminPage = () => {
                 {activeTab === 'products-add' && <AddProduct />}
                 {activeTab === 'categories-list' && <CategoryList />}
                 {activeTab === 'categories-add' && <AddCategory />}
-                {activeTab === 'users-list' && <UserList />}
-                {activeTab === 'users-add' && <AddUser />}
-                {activeTab === 'orders-list' && <OrderList />}
-                {activeTab === 'orders-add' && <AddOrder />}
+                {/* {activeTab === 'users-list' && <UserList />} */}
+                {/* {activeTab === 'users-add' && <AddUser />} */}
+                {/* {activeTab === 'orders-list' && <OrderList />} */}
+                {/* {activeTab === 'orders-add' && <AddOrder />} */}
             </main>
         </div>
     );

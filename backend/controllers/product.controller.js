@@ -2,6 +2,10 @@ import expressAsyncHandler from "express-async-handler";
 import { getLocalProductModel } from "../config/localDb.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
+
+import fs from "fs/promises";
+import path from "path";
+
 export const createProduct = expressAsyncHandler(async (req, res, next) => {
     const ProductModel = getLocalProductModel();
     if (!ProductModel) return next(new ErrorResponse("Product model not found", 500))
@@ -41,3 +45,80 @@ export const getAllProducts = expressAsyncHandler(async (req, res, next) => {
         products
     })
 })
+
+
+export const updateProduct = expressAsyncHandler(async (req, res, next) => {
+    const ProductModel = getLocalProductModel();
+
+    if (!ProductModel) return next(new ErrorResponse("Product model not found", 500))
+
+    const { id } = req.params;
+
+    const product = await ProductModel.findById(id);
+    if (!product) {
+        return next(new ErrorResponse("Product not found", 404));
+    }
+
+    const productData = JSON.parse(req.body.data);
+    console.log(productData)
+
+    let updateData;
+    try {
+        console.log(req.body.data)
+        updateData = JSON.parse(req.body.data);
+    } catch (error) {
+        return next(new ErrorResponse("Invalid product data format", 400));
+    }
+
+    if (req.file) {
+        const oldImageName = product.image;
+
+        try {
+            await fs.unlink(oldImageName);
+        } catch (err) {
+            return next(new ErrorResponse("Failed to delete old image", 500))
+        }
+
+        updateData.image = process.env.BACKEND_SERVER_IMAGE_PATH + "/" + req.file.filename;
+    }
+
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
+        id,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    return res.status(200).json({
+        success: true,
+        message: "Product updated successfully",
+        product: updatedProduct
+    });
+});
+
+export const deleteProduct = expressAsyncHandler(async (req, res, next) => {
+    const ProductModel = getLocalProductModel();
+
+    if (!ProductModel) return next(new ErrorResponse("Product model not found", 500))
+
+    const { id } = req.params;
+
+    const product = await ProductModel.findById(id);
+    if (!product) {
+        return next(new ErrorResponse("Product not found", 404));
+    }
+
+    try {
+        const imagePath = path.resolve(product.image);
+        await fs.unlink(imagePath);
+    } catch (err) {
+        return next(new ErrorResponse("Failed to delete old image", 500))
+    }
+
+    await product.deleteOne();
+
+    return res.status(200).json({
+        success: true,
+        message: "Product deleted successfully",
+        product
+    });
+});

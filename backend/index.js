@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectToDB } from "./config/localDb.js";
 import userRouter from "./routers/user.router.js";
 import productRouter from "./routers/product.router.js";
+import categoryRouter from "./routers/category.router.js";
 import { errorHandler } from "./middlewares/ErrorHandler.js";
 import cookieParser from "cookie-parser";
 dotenv.config();
@@ -14,12 +15,13 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser())
 app.use(cors({
     origin: ["http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true
 }));
 
 app.use("/api/users", userRouter)
 app.use("/api/products", productRouter)
+app.use("/api/categories", categoryRouter)
 
 app.use(errorHandler)
 connectToDB();

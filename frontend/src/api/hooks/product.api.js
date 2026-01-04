@@ -58,3 +58,61 @@ export const useGetAllProducts = () => {
         loading,
     }
 }
+
+export const useUpdateProduct = () => {
+    const [loading, setLoading] = useState(false);
+
+    const updateProduct = async ({ product, id }) => {
+        setLoading(true)
+        console.log(product, PRODUCT_ROUTES.UPDATE_PRODUCT + "/" + id)
+        try {
+            const response = await apiClient.patch(PRODUCT_ROUTES.UPDATE_PRODUCT + "/" + id, product, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            if (response.data) {
+                toast.success("Product updated successfully")
+                return response.data
+            }
+        } catch (error) {
+            const ErrorMessage = error.response?.data?.message || "Something went wrong"
+            toast.error(ErrorMessage)
+            console.log("Error in update Product", error)
+            return;
+        } finally {
+            setLoading(false)
+        }
+    }
+    return {
+        updateProduct,
+        loading
+    }
+}
+
+export const useDeleteProduct = () => {
+    const [loading, setLoading] = useState(false);
+
+    const deleteProduct = async (id) => {
+        setLoading(true)
+        try {
+            const response = await apiClient.delete(PRODUCT_ROUTES.DELETE_PRODUCT + "/" + id)
+            if (response.data) {
+                toast.success("Product deleted successfully")
+                return response.data
+            }
+        } catch (error) {
+            const ErrorMessage = error.response?.data?.message || "Something went wrong"
+            toast.error(ErrorMessage)
+            console.log("Error in delete Product", error)
+            return;
+        } finally {
+            setLoading(false)
+        }
+    }
+    return {
+        deleteProduct,
+        loading
+    }
+}

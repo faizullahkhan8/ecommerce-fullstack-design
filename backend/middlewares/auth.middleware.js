@@ -5,35 +5,40 @@ import expressAsyncHandler from "express-async-handler"
 
 export const isAuth = expressAsyncHandler(async (req, res, next) => {
 
-    const UserModel = getLocalUserModel()
+    const UserModel = getLocalUserModel();
 
     if (!UserModel) {
-        return next(new ErrorResponse("User model not initiated.", 404))
+        return next(new ErrorResponse("User model not found", 404))
     }
 
-    const token = req.cookies?.accessToken
+    const token = req.cookies?.accessToken;
 
     if (!token) {
-        return next(new ErrorResponse("Unauthorized", 401))
+        return next(new ErrorResponse("Access token missing", 401));
     }
 
-    const decoded = verifyToken(token, process.env.JWT_ACCESS_SECRET)
+    try {
+        const decoded = verifyToken(token, process.env.JWT_ACCESS_SECRET);
 
-    if (!decoded) {
-        return next(new ErrorResponse("Unauthorized", 401))
+        const user = await UserModel.findById(decoded.id)
+
+        if (!user) {
+            return next(new ErrorResponse("User not found", 404));
+        }
+
+        req.user = user
+
+        next();
+    } catch (error) {
+        console.log(error)
+        if (error.name === "TokenExpiredError") {
+            return next(new ErrorResponse("Access token expired", 401));
+        }
+        return next(new ErrorResponse("Invalid access token", 401));
     }
+});
 
-    const user = await UserModel.findById(decoded.id)
-
-    if (!user) {
-        return next(new ErrorResponse("User not found", 404))
-    }
-
-    req.user = user
-    next()
-})
-
-export const authorize = (...role) => expressAsyncHandler(async (req, res, next) => {
+export const authorize = (role = []) => expressAsyncHandler(async (req, res, next) => {
     if (!role.includes(req.user.role)) {
         return next(new ErrorResponse("Unauthorized", 401))
     }

@@ -7,7 +7,6 @@ import {
     Users,
     ShoppingCart,
     Layers,
-    ChevronRight,
 } from 'lucide-react';
 
 const AdminSidebar = ({ searchParams, setSearchParams }) => {
