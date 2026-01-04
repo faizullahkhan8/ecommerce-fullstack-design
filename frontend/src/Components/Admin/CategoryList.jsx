@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useGetAllCategories, useDeleteCategory } from "../../api/hooks/category.api.js";
 import { Edit, MoreVertical, Trash2, FolderTree, CheckCircle2, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import DeleteDialog from "../../UI/DialogBox.jsx"; // Using the reusable dialog we created
-import { toast } from "react-toastify";
+import DeleteDialog from "../../UI/DialogBox.jsx";
 
 const CategoryList = () => {
     const [categories, setCategories] = useState([]);
@@ -26,7 +25,6 @@ const CategoryList = () => {
         if (response?.success) {
             setCategories(prev => prev.filter(c => c._id !== categoryId));
             setDeleteModal({ isOpen: false, categoryId: null });
-            toast.success("Category removed");
         }
     };
 

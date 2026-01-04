@@ -4,10 +4,11 @@ import ProductList from '../Components/Admin/ProductList';
 import AddProduct from '../Components/Admin/AddProduct';
 import AddCategory from '../Components/Admin/AddCategory.jsx';
 import CategoryList from '../Components/Admin/CategoryList.jsx';
+import OrdersList from '../Components/Admin/OrdersList.jsx';
+import OrdersDetails from '../Components/Admin/OrdersDetails.jsx';
+import AddOrder from '../Components/Admin/AddOrder.jsx';
 // import UserList from '../Components/Admin/UserList';
 // import AddUser from '../Components/Admin/AddUser';
-// import OrderList from '../Components/Admin/OrderList';
-// import AddOrder from '../Components/Admin/AddOrder';
 
 import { useSearchParams } from "react-router-dom"
 
@@ -31,8 +32,9 @@ const AdminPage = () => {
                 {activeTab === 'categories-add' && <AddCategory />}
                 {/* {activeTab === 'users-list' && <UserList />} */}
                 {/* {activeTab === 'users-add' && <AddUser />} */}
-                {/* {activeTab === 'orders-list' && <OrderList />} */}
-                {/* {activeTab === 'orders-add' && <AddOrder />} */}
+                {activeTab === 'orders-list' && <OrdersList />}
+                {activeTab === 'orders-details' && <OrdersDetails />}
+                {activeTab === 'orders-add' && <AddOrder />}
             </main>
         </div>
     );

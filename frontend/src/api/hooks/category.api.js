@@ -55,10 +55,10 @@ export const useGetAllCategories = () => {
 export const useDeleteCategory = () => {
     const [loading, setLoading] = useState(false)
 
-    const deleteCategory = async (categoryId) => {
+    const deleteCategory = async (id) => {
         try {
             setLoading(true)
-            const response = await apiClient.delete(CATEGORY_ROUTES.DELETE_CATEGORY, { data: { categoryId } })
+            const response = await apiClient.delete(CATEGORY_ROUTES.DELETE_CATEGORY + "/" + id)
 
             if (response.data.success) {
                 toast.success("Category deleted successfully")

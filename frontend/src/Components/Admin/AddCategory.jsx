@@ -89,9 +89,6 @@ const AddCategory = () => {
                     <h2 className="text-xl font-bold text-gray-800">
                         {isEditing ? "Edit Category" : "Add New Category"}
                     </h2>
-                    <p className="text-sm text-gray-500">
-                        {isEditing ? `Modifying: ${categoryData.name}` : "Create a new product grouping."}
-                    </p>
                 </div>
                 {isEditing && (
                     <button
@@ -131,16 +128,13 @@ const AddCategory = () => {
                         onChange={(val) => setCategoryData({ ...categoryData, parentCategory: val })}
                         className="w-full"
                     />
-                    <p className="mt-1.5 flex items-center gap-1 text-xs text-gray-400">
-                        <Info size={12} /> Leave empty for top-level categories.
-                    </p>
                 </div>
 
                 {/* Active Toggle */}
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <div>
                         <span className="block text-sm font-semibold text-gray-700">Active Status</span>
-                        <span className="text-xs text-gray-500">Enable or disable this category globally.</span>
+
                     </div>
                     <button
                         type="button"
@@ -155,7 +149,7 @@ const AddCategory = () => {
                     </button>
                 </div>
 
-                <div className="pt-4 border-t flex justify-end gap-3">
+                <div className="pt-4 flex justify-end gap-3">
                     {isEditing && (
                         <Button
                             type="button"

@@ -134,6 +134,13 @@ const AdminSidebar = ({ searchParams, setSearchParams }) => {
                         >
                             List Orders
                         </MenuItem>
+                        <MenuItem
+                            icon={<Plus size={18} />}
+                            onClick={() => setSearchParams({ tab: 'orders-add' })}
+                            active={activeTab === 'orders-add'}
+                        >
+                            Add Order
+                        </MenuItem>
                     </SubMenu>
 
                     {/* Users Section */}

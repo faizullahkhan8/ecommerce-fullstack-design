@@ -6,7 +6,7 @@ const Select = ({
     options = [],
     value,
     onChange,
-    placeholder = "All category",
+    placeholder = "All items",
     disabled = false,
     className,
 }) => {

@@ -47,13 +47,13 @@ export const deleteCategory = expressAsyncHandler(async (req, res, next) => {
         return next(new ErrorResponse("Category model not found", 404))
     }
 
-    const { categoryId } = req.params
+    const { id } = req.params
 
-    if (!categoryId) {
+    if (!id) {
         return next(new ErrorResponse("Category ID is required", 400))
     }
 
-    const category = await CategoryModel.findByIdAndDelete(categoryId)
+    const category = await CategoryModel.findByIdAndDelete(id)
 
     res.status(200).json({
         success: true,
