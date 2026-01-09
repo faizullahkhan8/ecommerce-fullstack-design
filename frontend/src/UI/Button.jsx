@@ -33,7 +33,7 @@ const Button = ({
             disabled={disabled || loading}
             onClick={onClick}
             className={clsx(
-                "inline-flex items-center justify-center gap-2",
+                "inline-flex items-center justify-center gap-2 cursor-pointer",
                 "rounded-md font-medium transition-all",
                 "focus:outline-none focus:ring-2 focus:ring-offset-1",
                 VARIANTS[variant],

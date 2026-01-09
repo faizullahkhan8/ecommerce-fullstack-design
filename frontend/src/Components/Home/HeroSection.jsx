@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Button from "../../UI/Button";
 import { User, ArrowRight } from "lucide-react";
+
+import { useGetAllCategories } from "../../api/hooks/category.api";
 
 // Import images
 import BannerImage from "../../assets/images/phone.png";
@@ -9,17 +10,20 @@ import tshirt from "../../assets/images/t-shirt.png";
 import sofas from "../../assets/images/sofas.png";
 
 const HeroSection = () => {
-    const categories = [
-        { key: "Automobiles", label: "Cars & Vehicles" },
-        { key: "Clothes", label: "Clothing & Fashion" },
-        { key: "Home", label: "Home Interiors" },
-        { key: "Tech", label: "Computer & Tech" },
-        { key: "Tools", label: "Tools & Equipment" },
-        { key: "Sports", label: "Sports & Outdoor" },
-        { key: "Pets", label: "Pets & Supplies" },
-        { key: "Machinery", label: "Machinery & Tools" },
-        { key: "More", label: "More Categories" },
-    ];
+    const [categories, setCategories] = useState([]);
+    const { getAllCategories, loading: categoiresLoading } =
+        useGetAllCategories();
+
+    useEffect(() => {
+        (async () => {
+            const response = await getAllCategories();
+            if (response.success) {
+                setCategories(response.categories);
+            }
+        })();
+    }, []);
+
+    console.log(categories);
 
     const slides = [
         {
@@ -67,10 +71,10 @@ const HeroSection = () => {
                         {categories.map((cat, index) => (
                             <li key={index}>
                                 <Link
-                                    to={`/products?category=${cat.key.toLowerCase()}`}
+                                    to={`/products?category=${cat.name.toLowerCase()}`}
                                     className="block px-3 py-2 text-gray-600 hover:bg-blue-50 hover:text-primary rounded-md transition-colors text-sm font-medium"
                                 >
-                                    {cat.label}
+                                    {cat.name}
                                 </Link>
                             </li>
                         ))}
@@ -156,7 +160,7 @@ const HeroSection = () => {
                     {/* Promo Box 1 - Orange */}
                     <div className="bg-[#F38332] p-4 rounded-md text-white flex-1 flex flex-col justify-center">
                         <p className="text-sm opacity-90 mb-1">
-                            Get US $10 off
+                            Get Rs:1000 off
                         </p>
                         <p className="font-medium text-lg leading-tight mb-2">
                             with a new supplier

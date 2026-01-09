@@ -19,18 +19,27 @@ const OrderDetails = () => {
     //     }
     // }, [orderId]);
 
-    if (!order) return <div className="p-10 text-center">Loading order details...</div>;
+    if (!order)
+        return <div className="p-10 text-center">Loading order details...</div>;
 
     return (
         <div className="m-6 max-w-4xl mx-auto space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-full">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="p-2 hover:bg-gray-100 rounded-full"
+                >
                     <ArrowLeft size={20} />
                 </button>
                 <div>
-                    <h2 className="text-xl font-bold text-gray-800">Order #{order._id.slice(-8).toUpperCase()}</h2>
-                    <p className="text-sm text-gray-500">Placed on {new Date(order.createdAt).toLocaleDateString()}</p>
+                    <h2 className="text-xl font-bold text-gray-800">
+                        Order #{order._id.slice(-8).toUpperCase()}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                        Placed on{" "}
+                        {new Date(order.createdAt).toLocaleDateString()}
+                    </p>
                 </div>
             </div>
 
@@ -45,10 +54,18 @@ const OrderDetails = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-white">
                             <tr>
-                                <th className="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Product</th>
-                                <th className="px-6 py-3 text-center text-[10px] font-bold text-gray-400 uppercase">Qty</th>
-                                <th className="px-6 py-3 text-right text-[10px] font-bold text-gray-400 uppercase">Price</th>
-                                <th className="px-6 py-3 text-right text-[10px] font-bold text-gray-400 uppercase">Total</th>
+                                <th className="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">
+                                    Product
+                                </th>
+                                <th className="px-6 py-3 text-center text-[10px] font-bold text-gray-400 uppercase">
+                                    Qty
+                                </th>
+                                <th className="px-6 py-3 text-right text-[10px] font-bold text-gray-400 uppercase">
+                                    Price
+                                </th>
+                                <th className="px-6 py-3 text-right text-[10px] font-bold text-gray-400 uppercase">
+                                    Total
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -57,17 +74,29 @@ const OrderDetails = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
                                             <img
-                                                src={`${import.meta.env.VITE_BACKEND_URL}/${item.product.image}`}
+                                                src={`${
+                                                    import.meta.env
+                                                        .VITE_BACKEND_URL
+                                                }/${item.product.image}`}
                                                 className="w-10 h-10 object-cover rounded border"
                                                 alt={item.product.name}
                                             />
-                                            <span className="font-medium text-gray-800">{item.product.name}</span>
+                                            <span className="font-medium text-gray-800">
+                                                {item.product.name}
+                                            </span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-center text-gray-600">x{item.quantity}</td>
-                                    <td className="px-6 py-4 text-right text-gray-600">${item.price.toFixed(2)}</td>
+                                    <td className="px-6 py-4 text-center text-gray-600">
+                                        x{item.quantity}
+                                    </td>
+                                    <td className="px-6 py-4 text-right text-gray-600">
+                                        Rs: {item.price.toFixed(2)}
+                                    </td>
                                     <td className="px-6 py-4 text-right font-bold text-gray-800">
-                                        ${(item.quantity * item.price).toFixed(2)}
+                                        Rs:{" "}
+                                        {(item.quantity * item.price).toFixed(
+                                            2
+                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -78,15 +107,19 @@ const OrderDetails = () => {
                     <div className="p-6 bg-gray-50 border-t border-gray-200 flex flex-col items-end gap-2">
                         <div className="flex justify-between w-48 text-sm">
                             <span className="text-gray-500">Subtotal:</span>
-                            <span className="font-medium">${order.totalAmount.toFixed(2)}</span>
+                            <span className="font-medium">
+                                ${order.totalAmount.toFixed(2)}
+                            </span>
                         </div>
                         <div className="flex justify-between w-48 text-sm">
                             <span className="text-gray-500">Shipping:</span>
-                            <span className="font-medium">$0.00</span>
+                            <span className="font-medium">Rs: 0.00</span>
                         </div>
                         <div className="flex justify-between w-48 text-lg font-bold border-t pt-2 mt-2">
                             <span>Total:</span>
-                            <span className="text-blue-600">${order.totalAmount.toFixed(2)}</span>
+                            <span className="text-blue-600">
+                                Rs: {order.totalAmount.toFixed(2)}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -94,13 +127,21 @@ const OrderDetails = () => {
                 {/* 2. Customer Info Sidebar */}
                 <div className="space-y-6">
                     <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-                        <h3 className="text-sm font-bold mb-4 flex items-center gap-2"><User size={16} /> Customer</h3>
-                        <p className="text-sm font-medium text-gray-900">{order.user?.name || "Guest"}</p>
-                        <p className="text-sm text-gray-500">{order.user?.email}</p>
+                        <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
+                            <User size={16} /> Customer
+                        </h3>
+                        <p className="text-sm font-medium text-gray-900">
+                            {order.user?.name || "Guest"}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            {order.user?.email}
+                        </p>
                     </div>
 
                     <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-                        <h3 className="text-sm font-bold mb-4 flex items-center gap-2"><MapPin size={16} /> Shipping Address</h3>
+                        <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
+                            <MapPin size={16} /> Shipping Address
+                        </h3>
                         <p className="text-xs text-gray-600 leading-relaxed italic">
                             {order.shippingAddress || "No address provided"}
                         </p>

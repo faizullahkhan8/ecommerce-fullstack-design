@@ -1,11 +1,14 @@
 import { Star, Heart } from "lucide-react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/slices/cartSlice";
 
 const ProductCard = ({ product }) => {
-
-    const handleAddToCart = (e) => {
+    const dispatch = useDispatch();
+    const handleAddToCart = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        dispatch(addToCart(product));
     };
 
     const handleWishlist = (e) => {
@@ -22,14 +25,16 @@ const ProductCard = ({ product }) => {
 
     return (
         <Link
-            to={`/product/${product?.id}`}
+            to={`/product/${product?._id}`}
             className="block bg-white border border-gray-200 rounded-lg overflow-hidden 
                        hover:shadow-md transition-shadow group h-full flex flex-col"
         >
             <div className="relative pt-[100%] bg-white border-b border-gray-100">
                 <img
-                    src={product?.image}
-                    alt={product?.title || "Product image"}
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${
+                        product?.image
+                    }`}
+                    alt={product?.name || "Product image"}
                     loading="lazy"
                     className="absolute top-0 left-0 w-full h-full object-contain p-4 
                                group-hover:scale-105 transition-transform duration-300"
@@ -40,12 +45,12 @@ const ProductCard = ({ product }) => {
                 <div className="flex justify-between items-start mb-2">
                     <div>
                         <span className="font-bold text-lg text-gray-900">
-                            ${product?.price}
+                            Rs:{product?.price}
                         </span>
 
                         {originalPrice && (
                             <span className="ml-2 text-sm text-gray-400 line-through">
-                                ${originalPrice}
+                                Rs: {originalPrice}
                             </span>
                         )}
                     </div>
@@ -79,9 +84,11 @@ const ProductCard = ({ product }) => {
                     </span>
                 </div>
 
-                <h3 className="text-gray-600 font-medium mb-4 line-clamp-2 flex-grow 
-                               group-hover:text-primary transition-colors">
-                    {product?.title || "Product"}
+                <h3
+                    className="text-gray-600 font-medium mb-4 line-clamp-2 grow 
+                               group-hover:text-primary transition-colors"
+                >
+                    {product?.name || "Product"}
                 </h3>
 
                 <button

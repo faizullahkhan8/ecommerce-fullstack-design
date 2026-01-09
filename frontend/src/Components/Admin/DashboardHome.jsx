@@ -4,7 +4,7 @@ const DashboardHome = () => (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                 <h3 className="text-gray-500 text-sm">Total Sales</h3>
-                <p className="text-2xl font-bold">$12,450</p>
+                <p className="text-2xl font-bold">Rs:12,450</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                 <h3 className="text-gray-500 text-sm">Total Orders</h3>

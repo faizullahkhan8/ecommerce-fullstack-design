@@ -1,7 +1,23 @@
-import { X, Home, List, Package, Globe, Headphones, Building, User, Heart, ShoppingCart } from "lucide-react"
+import {
+    X,
+    Home,
+    List,
+    Package,
+    Globe,
+    Headphones,
+    Building,
+    User,
+    Heart,
+    ShoppingCart,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
-const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }) => {
+const MobileSideBar = ({
+    isMenuOpen,
+    setIsMenuOpen,
+    isAuthenticated,
+    cartCount,
+}) => {
     return (
         <>
             {/* Overlay */}
@@ -13,8 +29,11 @@ const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }
             )}
 
             {/* Sidebar */}
-            <div className={`fixed top-0 right-0 h-full w-80 bg-white z-50 md:hidden transform transition-transform duration-300 ease-in-out shadow-2xl ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}>
+            <div
+                className={`fixed top-0 right-0 h-full w-80 bg-white z-50 md:hidden transform transition-transform duration-300 ease-in-out shadow-2xl ${
+                    isMenuOpen ? "translate-x-0" : "translate-x-full"
+                }`}
+            >
                 {/* Sidebar Content */}
                 <div className="flex flex-col h-full">
                     {/* Close Button */}
@@ -38,7 +57,9 @@ const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }
                                 <div>
                                     {isAuthenticated ? (
                                         <div>
-                                            <p className="font-medium text-gray-900">User</p>
+                                            <p className="font-medium text-gray-900">
+                                                User
+                                            </p>
                                             <button
                                                 onClick={() => {
                                                     setIsMenuOpen(false);
@@ -104,7 +125,10 @@ const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }
                                 onClick={() => setIsMenuOpen(false)}
                                 className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                             >
-                                <ShoppingCart size={20} className="text-gray-400" />
+                                <ShoppingCart
+                                    size={20}
+                                    className="text-gray-400"
+                                />
                                 <span className="font-medium">My cart</span>
                                 {cartCount > 0 && (
                                     <span className="ml-auto bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -121,11 +145,16 @@ const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }
                         <div className="py-2">
                             <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
                                 <Globe size={20} className="text-gray-400" />
-                                <span className="font-medium">English | USD</span>
+                                <span className="font-medium">
+                                    English | PKR
+                                </span>
                             </div>
 
                             <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                <Headphones size={20} className="text-gray-400" />
+                                <Headphones
+                                    size={20}
+                                    className="text-gray-400"
+                                />
                                 <span className="font-medium">Contact us</span>
                             </div>
 
@@ -157,4 +186,4 @@ const MobileSideBar = ({ isMenuOpen, setIsMenuOpen, isAuthenticated, cartCount }
     );
 };
 
-export default MobileSideBar
+export default MobileSideBar;

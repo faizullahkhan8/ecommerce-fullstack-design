@@ -1,46 +1,65 @@
-import { getLocalUserModel } from "../config/localDb.js"
-import { verifyToken } from "../utils/jwt.js"
-import { ErrorResponse } from "../utils/ErrorResponse.js"
-import expressAsyncHandler from "express-async-handler"
+import { getLocalUserModel } from "../config/localDb.js";
+import { generateToken, setCookie, verifyToken } from "../utils/jwt.js";
+import { ErrorResponse } from "../utils/ErrorResponse.js";
+import expressAsyncHandler from "express-async-handler";
 
 export const isAuth = expressAsyncHandler(async (req, res, next) => {
-
     const UserModel = getLocalUserModel();
 
     if (!UserModel) {
-        return next(new ErrorResponse("User model not found", 404))
+        return next(new ErrorResponse("User model not found", 404));
     }
 
-    const token = req.cookies?.accessToken;
+    const accessToken = req.cookies?.accessToken;
+    const refreshToken = req.cookies?.refreshToken;
 
-    if (!token) {
-        return next(new ErrorResponse("Access token missing", 401));
+    let accessDecode;
+    let refreshDecode;
+
+    if (accessToken) {
+        accessDecode = await verifyToken(
+            accessToken,
+            process.env.JWT_ACCESS_SECRET
+        );
     }
 
-    try {
-        const decoded = verifyToken(token, process.env.JWT_ACCESS_SECRET);
-
-        const user = await UserModel.findById(decoded.id)
-
-        if (!user) {
-            return next(new ErrorResponse("User not found", 404));
-        }
-
-        req.user = user
-
-        next();
-    } catch (error) {
-        console.log(error)
-        if (error.name === "TokenExpiredError") {
-            return next(new ErrorResponse("Access token expired", 401));
-        }
-        return next(new ErrorResponse("Invalid access token", 401));
+    if (refreshToken) {
+        refreshDecode = await verifyToken(
+            refreshToken,
+            process.env.JWT_REFRESH_SECRET
+        );
     }
+
+    if (!accessDecode && !refreshDecode) {
+        return next(new ErrorResponse("Session Expired Login Again", 401));
+    }
+
+    const user = await UserModel.findById(refreshDecode.id);
+
+    if (!user) {
+        return next(new ErrorResponse("User not found", 404));
+    }
+
+    if (!accessDecode && refreshDecode) {
+        const newAcessToken = generateToken(
+            user,
+            "1d",
+            process.env.JWT_ACCESS_SECRET
+        );
+
+        setCookie(res, newAcessToken, 1000 * 60 * 60 * 24, "accessToken");
+    }
+
+    req.user = user;
+
+    next();
 });
 
-export const authorize = (role = []) => expressAsyncHandler(async (req, res, next) => {
-    if (!role.includes(req.user.role)) {
-        return next(new ErrorResponse("Unauthorized", 401))
-    }
-    next()
-})
+export const authorize = (role = []) =>
+    expressAsyncHandler(async (req, res, next) => {
+        console.log(req.user);
+        if (!role.includes(req.user.role)) {
+            return next(new ErrorResponse("Unauthorized", 401));
+        }
+        next();
+    });
