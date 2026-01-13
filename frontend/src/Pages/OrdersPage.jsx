@@ -70,7 +70,7 @@ const OrdersPage = () => {
                                                 src={`${
                                                     import.meta.env
                                                         .VITE_BACKEND_URL
-                                                }/${item.product.image}`}
+                                                }/${item.product?.image}`}
                                                 className="max-w-full max-h-full"
                                                 alt="thumb"
                                             />

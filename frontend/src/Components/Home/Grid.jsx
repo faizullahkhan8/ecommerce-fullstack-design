@@ -14,7 +14,7 @@ const Grid = ({ title, bannerImg, items }) => {
                     style={{ backgroundImage: `url(${bannerImg})` }}
                 >
                     <div>
-                        <h3 className="text-xl font-bold text-gray-900 w-36 leading-tight mb-4">
+                        <h3 className="bg-amber-300 text-2xl font-bold text-white w-36 leading-tight mb-4">
                             {title}
                         </h3>
                         <button className="px-4 py-2 bg-white text-gray-900 font-medium rounded-md shadow-sm hover:bg-gray-50 text-sm transition">

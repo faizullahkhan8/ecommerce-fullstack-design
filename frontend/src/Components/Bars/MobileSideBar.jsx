@@ -9,7 +9,9 @@ import {
     User,
     Heart,
     ShoppingCart,
+    LayoutDashboard,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const MobileSideBar = ({
@@ -18,6 +20,8 @@ const MobileSideBar = ({
     isAuthenticated,
     cartCount,
 }) => {
+    const { user } = useSelector((state) => state.auth);
+
     return (
         <>
             {/* Overlay */}
@@ -58,7 +62,7 @@ const MobileSideBar = ({
                                     {isAuthenticated ? (
                                         <div>
                                             <p className="font-medium text-gray-900">
-                                                User
+                                                {user?.name}
                                             </p>
                                             <button
                                                 onClick={() => {
@@ -84,6 +88,20 @@ const MobileSideBar = ({
 
                         {/* Main Navigation */}
                         <div className="py-2">
+                            {user.role === "admin" && (
+                                <Link
+                                    to="/admin-dashboard"
+                                    className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                                >
+                                    <LayoutDashboard
+                                        size={20}
+                                        className="text-gray-400"
+                                    />
+                                    <span className="text-sm">
+                                        Admin Dashboard
+                                    </span>
+                                </Link>
+                            )}
                             <Link
                                 to="/"
                                 onClick={() => setIsMenuOpen(false)}

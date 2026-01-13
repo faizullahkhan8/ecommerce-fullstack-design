@@ -87,7 +87,7 @@ export const useLogoutUser = () => {
     };
 };
 
-export const useGetUser = () => {
+const useGetUser = () => {
     const [loading, setLoading] = useState(false);
 
     const getUser = async ({ userId }) => {

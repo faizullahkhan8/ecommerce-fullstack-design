@@ -31,6 +31,6 @@ const wishlistSlice = createSlice({
     },
 });
 
-export const { toggleWishlist, clearWishlist, setWishlist } =
+export const { toggleWishlist,  setWishlist } =
     wishlistSlice.actions;
 export default wishlistSlice.reducer;

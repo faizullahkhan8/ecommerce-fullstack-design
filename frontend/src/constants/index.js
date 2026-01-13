@@ -25,7 +25,7 @@ export const SUPPLIER_COUNTRIES = [
 // ============================================
 // Different pricing based on order quantity
 // These multipliers are applied to the base product price
-export const PRICING = {
+const PRICING = {
     // Small orders get 10% discount
     TIER_1_MULTIPLIER: 0.9,
     TIER_1_LABEL: "50-100 pcs",
@@ -44,7 +44,7 @@ export const PRICING = {
 // ============================================
 // Default values for product enrichment
 // Used when API doesn't provide these fields
-export const PRODUCT_DEFAULTS = {
+const PRODUCT_DEFAULTS = {
     REVIEW_COUNT: 32,
     SOLD_COUNT: 154,
     PRICE_TYPE: "Negotiable",
@@ -60,7 +60,7 @@ export const PRODUCT_DEFAULTS = {
 // MODEL SPECIFICATIONS
 // ============================================
 // Sample model/spec data for product detail page
-export const MODEL_SPECS = {
+const MODEL_SPECS = {
     STYLE: "Classic style",
     CERTIFICATE: "ISO-9001+CTTY",
     SIZE: "34mm x 450mm x 19mm",
@@ -77,7 +77,7 @@ export const MODEL_SPECS = {
 // SUPPLIER INFO
 // ============================================
 // Default supplier information
-export const SUPPLIER_INFO = {
+const SUPPLIER_INFO = {
     NAME: "Supplier Trading LLC",
     VERIFIED: true,
     COUNTRY: {
@@ -104,7 +104,7 @@ export const LOADING_MESSAGES = {
 // ERROR MESSAGES  
 // ============================================
 // Friendly error messages for users
-export const ERROR_MESSAGES = {
+const ERROR_MESSAGES = {
     PRODUCT_NOT_FOUND: "Sorry, we couldn't find that product.",
     NETWORK_ERROR: "Oops! Please check your internet connection.",
     GENERIC_ERROR: "Something went wrong. Please try again.",
@@ -115,7 +115,7 @@ export const ERROR_MESSAGES = {
 // UI CONSTANTS
 // ============================================
 // Common UI values used across components
-export const UI = {
+const UI = {
     // Toast notification duration
     TOAST_DURATION: 3000,
     

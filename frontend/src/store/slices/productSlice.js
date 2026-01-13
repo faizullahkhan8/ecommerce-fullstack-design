@@ -38,5 +38,5 @@ const productSlice = createSlice({
     }
 });
 
-export const { setProducts, setCategories, setSelectedProduct } = productSlice.actions;
+export const {    } = productSlice.actions;
 export default productSlice.reducer;

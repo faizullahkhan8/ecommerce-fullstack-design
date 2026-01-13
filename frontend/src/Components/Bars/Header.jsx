@@ -4,7 +4,6 @@ import {
     ShoppingCart,
     Heart,
     Menu,
-    MessageSquare,
     LogOut,
     LayoutDashboard,
 } from "lucide-react";
@@ -82,12 +81,12 @@ const Header = () => {
                     className="flex items-center gap-2 flex-shrink-0 group"
                 >
                     <img
-                        src="/logo192.png"
+                        src="./logo.png"
                         alt="App Logo"
-                        className="h-10 w-10 object-contain"
+                        className="h-10 w-10 object-contain rounded-md"
                     />
                     <span className="text-2xl font-bold text-primary-dark group-hover:text-primary transition-colors">
-                        EcomX
+                        E-Store by Faiz
                     </span>
                 </Link>
 
@@ -160,33 +159,40 @@ const Header = () => {
                         </div>
                     )}
                     {userDropDownOpen && (
-                        <div className="flex flex-col gap-2 absolute top-full right-0 w-max rounded-md bg-white shadow-md p-2 border border-gray-200">
-                            <Link
-                                to="/profile"
-                                className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer"
-                            >
-                                <User size={16} />
-                                <span className="text-sm">Profile</span>
-                            </Link>
-                            {role === "admin" && (
+                        <>
+                            <div
+                                onClick={() => setUserDropDownOpen(false)}
+                                className="w-full h-screen fixed top-0
+                             left-0 inset-0                             "
+                            ></div>
+                            <div className="flex flex-col gap-2 absolute top-full right-0 w-max rounded-md bg-white shadow-md p-2 border border-gray-200 z-50">
                                 <Link
-                                    to="/admin-dashboard"
+                                    to="/profile"
                                     className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer"
                                 >
-                                    <LayoutDashboard size={16} />
-                                    <span className="text-sm">
-                                        Admin Dashboard
-                                    </span>
+                                    <User size={16} />
+                                    <span className="text-sm">Profile</span>
                                 </Link>
-                            )}
-                            <div
-                                onClick={handleSignOut}
-                                className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer text-red-500"
-                            >
-                                <LogOut size={16} />
-                                <span className="text-sm">Logout</span>
+                                {role === "admin" && (
+                                    <Link
+                                        to="/admin-dashboard"
+                                        className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer"
+                                    >
+                                        <LayoutDashboard size={16} />
+                                        <span className="text-sm">
+                                            Admin Dashboard
+                                        </span>
+                                    </Link>
+                                )}
+                                <div
+                                    onClick={handleSignOut}
+                                    className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer text-red-500"
+                                >
+                                    <LogOut size={16} />
+                                    <span className="text-sm">Logout</span>
+                                </div>
                             </div>
-                        </div>
+                        </>
                     )}
                 </div>
 

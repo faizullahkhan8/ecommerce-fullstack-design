@@ -19,7 +19,7 @@ const OrderSuccessPage = () => {
             const resp = await getOrderById(orderId);
             if (resp?.order) setOrder(resp.order);
         })();
-    }, [orderId, getOrderById, navigate]);
+    }, [orderId]);
 
     if (loading || !order) {
         return (

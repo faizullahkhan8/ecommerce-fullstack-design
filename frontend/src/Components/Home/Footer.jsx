@@ -6,6 +6,7 @@ import {
     Youtube,
     ChevronUp,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Footer Component
 const Footer = () => {
@@ -42,14 +43,19 @@ const Footer = () => {
                 <div className="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10">
                     <div className="max-w-xs">
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="bg-[#127FFF] p-2 rounded-md flex items-center justify-center">
-                                <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white rounded-sm relative">
-                                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-2 border-t-2 border-x-2 border-white rounded-t-full"></div>
-                                </div>
-                            </div>
-                            <span className="text-[#127FFF] text-xl sm:text-2xl font-bold">
-                                Brand
-                            </span>
+                            <Link
+                                to="/"
+                                className="flex items-center gap-2 flex-shrink-0 group"
+                            >
+                                <img
+                                    src="./logo.png"
+                                    alt="App Logo"
+                                    className="h-18 w-18 object-contain rounded-md"
+                                />
+                                <span className="text-2xl font-bold text-primary-dark group-hover:text-primary transition-colors">
+                                    E-Store by Faiz
+                                </span>
+                            </Link>
                         </div>
                         <p className="text-[#505050] text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                             Best information about the company goes here.
