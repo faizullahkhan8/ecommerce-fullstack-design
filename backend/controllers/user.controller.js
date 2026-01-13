@@ -29,7 +29,12 @@ export const registerUser = asyncHandler(async (req, res, next) => {
     let user;
 
     try {
-        user = await UserModel.create({ name, email, password });
+        user = await UserModel.create({
+            name,
+            email,
+            password,
+            phone: "0331234567",
+        });
     } catch (error) {
         console.error("CREATE USER ERROR:", error);
         return next(error);

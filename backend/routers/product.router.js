@@ -25,8 +25,8 @@ router.patch(
     upload.single("image"),
     updateProduct
 );
-router.get("/all", isAuth, getAllProducts);
+router.get("/all", getAllProducts);
 router.delete("/delete/:id", isAuth, authorize(["admin"]), deleteProduct);
-router.get("/get/:id", isAuth, getProductById);
+router.get("/get/:id", getProductById);
 
 export default router;

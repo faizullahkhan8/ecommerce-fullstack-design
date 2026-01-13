@@ -88,7 +88,7 @@ const MobileSideBar = ({
 
                         {/* Main Navigation */}
                         <div className="py-2">
-                            {user.role === "admin" && (
+                            {user?.role === "admin" && (
                                 <Link
                                     to="/admin-dashboard"
                                     className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"

@@ -89,16 +89,6 @@ export const getOrderById = expressAsyncHandler(async (req, res, next) => {
 
     if (!order) return next(new ErrorResponse("Order not found", 404));
 
-    // allow owner or admin (req.user.role)
-    if (
-        order.userId?.toString() !== req.user._id?.toString() &&
-        req.user.role !== "admin"
-    ) {
-        return next(
-            new ErrorResponse("Not authorized to view this order", 403)
-        );
-    }
-
     return res
         .status(200)
         .json({ success: true, message: "Order fetched.", order });
