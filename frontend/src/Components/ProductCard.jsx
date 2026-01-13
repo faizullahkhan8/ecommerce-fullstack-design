@@ -1,20 +1,46 @@
 import { Star, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
+import { toggleWishlist } from "../store/slices/wishlistSlice";
+import { useAddToWishlist, useRemoveFromWishlist } from "../api/hooks/user.api";
 
 const ProductCard = ({ product }) => {
     const dispatch = useDispatch();
     const handleAddToCart = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        console.log(product);
         dispatch(addToCart(product));
     };
 
-    const handleWishlist = (e) => {
+    const handleWishlist = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        dispatch(toggleWishlist(product));
+        try {
+            if (isInWishlist) {
+                await removeFromWishlist(product._id || product.id);
+            } else {
+                await addToWishlist(product._id || product.id);
+            }
+        } catch {
+            // revert on failure
+            dispatch(toggleWishlist(product));
+        }
     };
+
+    const wishlistItems = useSelector((state) => state.wishlist.items || []);
+    const { addToWishlist } = useAddToWishlist();
+    const { removeFromWishlist } = useRemoveFromWishlist();
+    const matchId = (item, product) => {
+        if (!item || !product) return false;
+        const aval = item._id || item.id || item;
+        const bval = product._id || product.id || product;
+        return aval.toString() === bval.toString();
+    };
+    const isInWishlist = !!wishlistItems.find((item) => matchId(item, product));
 
     let originalPrice = null;
     if (product?.discount > 0) {
@@ -57,8 +83,14 @@ const ProductCard = ({ product }) => {
 
                     <button
                         onClick={handleWishlist}
-                        className="p-1.5 border border-gray-200 rounded 
-                                   hover:border-red-200 hover:text-red-500 transition-colors"
+                        className={`p-1.5 border border-gray-200 rounded hover:border-red-200 transition-colors ${
+                            isInWishlist ? "text-red-500" : "text-gray-600"
+                        }`}
+                        aria-label={
+                            isInWishlist
+                                ? "Remove from wishlist"
+                                : "Add to wishlist"
+                        }
                     >
                         <Heart size={18} />
                     </button>

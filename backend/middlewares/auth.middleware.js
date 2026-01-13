@@ -57,7 +57,6 @@ export const isAuth = expressAsyncHandler(async (req, res, next) => {
 
 export const authorize = (role = []) =>
     expressAsyncHandler(async (req, res, next) => {
-        console.log(req.user);
         if (!role.includes(req.user.role)) {
             return next(new ErrorResponse("Unauthorized", 401));
         }

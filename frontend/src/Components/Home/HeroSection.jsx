@@ -18,12 +18,10 @@ const HeroSection = () => {
         (async () => {
             const response = await getAllCategories();
             if (response.success) {
-                setCategories(response.categories);
+                setCategories(response.categories.slice(0, 9));
             }
         })();
     }, []);
-
-    console.log(categories);
 
     const slides = [
         {

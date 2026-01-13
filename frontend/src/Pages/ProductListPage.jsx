@@ -27,15 +27,27 @@ const ProductListPage = () => {
         condition: "",
     });
 
+    // Pagination state
+    const page = parseInt(searchParams.get("page") || "1");
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         (async () => {
-            const response = await getAllProducts();
-
+            // Build query params for API
+            const params = {
+                page,
+                limit: 9,
+                ...filters,
+                brands: filters.brands.join(","),
+                features: filters.features.join(","),
+            };
+            const response = await getAllProducts(params);
             if (response.success) {
                 setProducts(response.products);
+                setTotalPages(response.totalPages || 1);
             }
         })();
-    }, []);
+    }, [page, filters]);
 
     // //
     // useEffect(() => {
@@ -64,6 +76,21 @@ const ProductListPage = () => {
             const updated = { ...prev, ...newFilters };
             setSearchParams((prevParams) => {
                 prevParams.set("page", "1");
+                Object.keys(newFilters).forEach((key) => {
+                    if (
+                        Array.isArray(newFilters[key]) &&
+                        newFilters[key].length === 0
+                    ) {
+                        prevParams.delete(key);
+                    } else if (
+                        newFilters[key] === "" ||
+                        newFilters[key] == null
+                    ) {
+                        prevParams.delete(key);
+                    } else {
+                        prevParams.set(key, newFilters[key]);
+                    }
+                });
                 return prevParams;
             });
             return updated;
@@ -81,18 +108,27 @@ const ProductListPage = () => {
             condition: "",
         });
         setSearchParams((prev) => {
-            prev.delete("page");
+            [
+                "category",
+                "minPrice",
+                "maxPrice",
+                "brands",
+                "features",
+                "rating",
+                "condition",
+                "page",
+            ].forEach((key) => prev.delete(key));
             return prev;
         });
     };
 
-    // const handlePageChange = (newPage) => {
-    //     setSearchParams((prev) => {
-    //         prev.set("page", newPage);
-    //         return prev;
-    //     });
-    //     window.scrollTo(0, 0);
-    // };
+    const handlePageChange = (newPage) => {
+        setSearchParams((prev) => {
+            prev.set("page", newPage);
+            return prev;
+        });
+        window.scrollTo(0, 0);
+    };
 
     const breadcrumbItems = [
         { label: "Home", path: "/" },
@@ -250,11 +286,11 @@ const ProductListPage = () => {
                         </div>
                     )}
 
-                    {/* <Pagination
-                        currentPage={pagination?.currentPage || 1}
-                        totalPages={pagination?.totalPages || 1}
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
                         onPageChange={handlePageChange}
-                    /> */}
+                    />
                 </div>
             </div>
         </div>

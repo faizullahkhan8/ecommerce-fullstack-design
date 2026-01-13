@@ -47,6 +47,15 @@ export const useGetAllProducts = () => {
         try {
             const response = await apiClient.get(PRODUCT_ROUTES.GET_ALL);
             if (response.data) {
+                // normalize products: add `id` alias for `_id`
+                if (
+                    response.data.products &&
+                    Array.isArray(response.data.products)
+                ) {
+                    response.data.products = response.data.products.map(
+                        (p) => ({ ...p, id: p._id })
+                    );
+                }
                 return response.data;
             }
         } catch (error) {
@@ -140,7 +149,11 @@ export const useGetProductById = () => {
             const response = await apiClient.get(
                 PRODUCT_ROUTES.GET_BY_ID + "/" + id
             );
-            if (response.data) {
+            if (response.data && response.data.product) {
+                response.data.product = {
+                    ...response.data.product,
+                    id: response.data.product._id,
+                };
                 return response.data;
             }
         } catch (error) {

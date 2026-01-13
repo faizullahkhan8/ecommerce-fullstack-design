@@ -137,48 +137,6 @@ const MobileSideBar = ({
                                 )}
                             </Link>
                         </div>
-
-                        {/* Divider */}
-                        <div className="border-t border-gray-200 my-2"></div>
-
-                        {/* Settings & Info */}
-                        <div className="py-2">
-                            <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                <Globe size={20} className="text-gray-400" />
-                                <span className="font-medium">
-                                    English | PKR
-                                </span>
-                            </div>
-
-                            <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                <Headphones
-                                    size={20}
-                                    className="text-gray-400"
-                                />
-                                <span className="font-medium">Contact us</span>
-                            </div>
-
-                            <div className="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
-                                <Building size={20} className="text-gray-400" />
-                                <span className="font-medium">About</span>
-                            </div>
-                        </div>
-
-                        {/* Divider */}
-                        <div className="border-t border-gray-200 my-2"></div>
-
-                        {/* Footer Links */}
-                        <div className="py-2 px-6 space-y-3">
-                            <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                User agreement
-                            </div>
-                            <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                Partnership
-                            </div>
-                            <div className="text-gray-600 hover:text-primary cursor-pointer transition-colors py-2">
-                                Privacy policy
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

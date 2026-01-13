@@ -1,13 +1,26 @@
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetUserOrders } from "../api/hooks/orders.api";
 
 const OrdersPage = () => {
-    const orders = useSelector((state) => state.order.orders);
+    const [orders, setOrders] = useState([]);
+    const { getUserOrders, loading } = useGetUserOrders();
+
+    useEffect(() => {
+        (async () => {
+            const resp = await getUserOrders();
+            if (resp?.orders) setOrders(resp.orders);
+        })();
+    }, []);
 
     return (
         <div className="container py-6">
             <h1 className="text-2xl font-bold my-6">My Orders</h1>
-            {orders.length === 0 ? (
+            {loading ? (
+                <div className="text-center py-20 bg-white border border-gray-200 rounded-lg">
+                    <p className="text-gray-500 mb-4">Loading your orders...</p>
+                </div>
+            ) : orders.length === 0 ? (
                 <div className="text-center py-20 bg-white border border-gray-200 rounded-lg">
                     <p className="text-gray-500 mb-4">
                         You have no orders yet.
@@ -54,14 +67,20 @@ const OrdersPage = () => {
                                     >
                                         <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
                                             <img
-                                                src={item.image}
+                                                src={`${
+                                                    import.meta.env
+                                                        .VITE_BACKEND_URL
+                                                }/${item.product.image}`}
                                                 className="max-w-full max-h-full"
                                                 alt="thumb"
                                             />
                                         </div>
                                         <div className="flex-1 text-sm">
                                             <div className="font-medium text-gray-900 line-clamp-1">
-                                                {item.title}
+                                                {item.title ||
+                                                    (item.product &&
+                                                        item.product.name) ||
+                                                    ""}
                                             </div>
                                             <div className="text-gray-500">
                                                 Qty: {item.quantity}

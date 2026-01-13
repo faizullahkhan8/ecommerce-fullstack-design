@@ -16,6 +16,7 @@ const RegisterPage = lazy(() => import("./Pages/RegisterPage"));
 const WishlistPage = lazy(() => import("./Pages/WishlistPage"));
 const CheckoutPage = lazy(() => import("./Pages/CheckoutPage"));
 const OrdersPage = lazy(() => import("./Pages/OrdersPage"));
+const OrderSuccessPage = lazy(() => import("./Pages/OrderSuccessPage"));
 const ProfilePage = lazy(() => import("./Pages/ProfilePage"));
 const ProtectedRoute = lazy(() => import("./Components/ProtectedRoute"));
 const AdminPage = lazy(() => import("./Pages/AdminPage"));
@@ -23,46 +24,82 @@ const AdminPage = lazy(() => import("./Pages/AdminPage"));
 const App = () => {
     return (
         <>
-            <ToastContainer position="top-right" autoClose={3000} pauseOnHover={false} closeOnClick={true} />
-            <Suspense fallback={<LoadingSpinner message={LOADING_MESSAGES.PAGE} />}>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                pauseOnHover={false}
+                closeOnClick={true}
+            />
+            <Suspense
+                fallback={<LoadingSpinner message={LOADING_MESSAGES.PAGE} />}
+            >
                 <Routes>
                     <Route path="/" element={<BaseLayout />}>
                         <Route index element={<HomePage />} />
                         <Route path="products" element={<ProductListPage />} />
-                        <Route path="product/:id" element={<ProductDetailPage />} />
+                        <Route
+                            path="product/:id"
+                            element={<ProductDetailPage />}
+                        />
                         <Route path="cart" element={<CartPage />} />
-                        <Route path="checkout" element={
-                            <ProtectedRoute roles={["user", "admin"]}>
-                                <CheckoutPage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="wishlist" element={
-                            <ProtectedRoute roles={["user", "admin"]}>
-                                <WishlistPage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="profile" element={
-                            <ProtectedRoute roles={["user", "admin"]}>
-                                <ProfilePage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="orders" element={
-                            <ProtectedRoute roles={["user", "admin"]}>
-                                <OrdersPage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="admin-dashboard" element={
-                            <ProtectedRoute roles={["admin"]}>
-                                <AdminPage />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="messages" element={
-                            <ProtectedRoute roles={["user", "admin"]}>
-                                <div className="p-8 text-center text-gray-500">
-                                    Messages Page Placeholder
-                                </div>
-                            </ProtectedRoute>
-                        } />
+                        <Route
+                            path="checkout"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <CheckoutPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="wishlist"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <WishlistPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="profile"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <ProfilePage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="orders"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <OrdersPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="orders/success"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <OrderSuccessPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="admin-dashboard"
+                            element={
+                                <ProtectedRoute roles={["admin"]}>
+                                    <AdminPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="messages"
+                            element={
+                                <ProtectedRoute roles={["user", "admin"]}>
+                                    <div className="p-8 text-center text-gray-500">
+                                        Messages Page Placeholder
+                                    </div>
+                                </ProtectedRoute>
+                            }
+                        />
                     </Route>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />

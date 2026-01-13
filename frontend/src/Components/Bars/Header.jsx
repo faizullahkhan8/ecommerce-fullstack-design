@@ -1,10 +1,14 @@
 import {
-    Search, User, ShoppingCart, Heart, Menu, MessageSquare,
+    Search,
+    User,
+    ShoppingCart,
+    Heart,
+    Menu,
+    MessageSquare,
     LogOut,
     LayoutDashboard,
-
 } from "lucide-react";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutUser } from "../../api/hooks/user.api";
@@ -14,7 +18,10 @@ import MobileSideBar from "./MobileSideBar";
 import NavigationBar from "./NavigationBar.jsx";
 
 const NavIcon = ({ to, icon, label, badge }) => (
-    <Link to={to} className="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors relative group">
+    <Link
+        to={to}
+        className="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors relative group"
+    >
         <div className="relative">
             {icon}
             {badge > 0 && (
@@ -23,7 +30,9 @@ const NavIcon = ({ to, icon, label, badge }) => (
                 </span>
             )}
         </div>
-        <span className="text-xs hidden md:block group-hover:text-primary transition-colors">{label}</span>
+        <span className="text-xs hidden md:block group-hover:text-primary transition-colors">
+            {label}
+        </span>
     </Link>
 );
 
@@ -31,15 +40,15 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userDropDownOpen, setUserDropDownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const cartItems = useSelector(state => state.cart.items);
-    const { isAuthenticated, user } = useSelector(state => state.auth);
+    const cartItems = useSelector((state) => state.cart.items);
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
     const role = user?.role;
 
     const dispatch = useDispatch();
 
-    const { logoutUser, loading: logoutLoading } = useLogoutUser();
+    const { logoutUser } = useLogoutUser();
 
     useEffect(() => {
         if (searchQuery !== undefined) {
@@ -52,7 +61,6 @@ const Header = () => {
         }
     }, [searchQuery]);
 
-
     const handleSignOut = async () => {
         const response = await logoutUser();
         if (response.success) {
@@ -60,7 +68,7 @@ const Header = () => {
             setUserDropDownOpen(false);
             navigate("/");
         }
-    }
+    };
 
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -69,11 +77,18 @@ const Header = () => {
             {/* Main Header */}
             <div className="container py-4 flex items-center justify-between gap-8 h-20">
                 {/* Logo */}
-                <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
-                    <div className="bg-primary text-white p-2 rounded-lg group-hover:bg-primary-dark transition-colors">
-                        <ShoppingCart size={24} />
-                    </div>
-                    <span className="text-2xl font-bold text-primary-dark group-hover:text-primary transition-colors">Brand</span>
+                <Link
+                    to="/"
+                    className="flex items-center gap-2 flex-shrink-0 group"
+                >
+                    <img
+                        src="/logo192.png"
+                        alt="App Logo"
+                        className="h-10 w-10 object-contain"
+                    />
+                    <span className="text-2xl font-bold text-primary-dark group-hover:text-primary transition-colors">
+                        EcomX
+                    </span>
                 </Link>
 
                 {/* Search Bar - Desktop */}
@@ -103,41 +118,83 @@ const Header = () => {
 
                 {/* User Actions - Desktop */}
                 <div className="hidden md:flex items-center gap-3 relative">
-                    <NavIcon to="/messages" icon={<MessageSquare size={18} />} label="Message" />
-                    <NavIcon to="/orders" icon={<Heart size={18} />} label="Orders" />
-                    <NavIcon to="/cart" icon={<ShoppingCart size={18} />} label="My Cart" badge={cartCount} />
+                    <NavIcon
+                        to="/wishlist"
+                        icon={<Heart size={18} />}
+                        label="Wishlist"
+                    />
+                    <NavIcon
+                        to="/orders"
+                        icon={<ShoppingCart size={18} />}
+                        label="Orders"
+                    />
+                    <NavIcon
+                        to="/cart"
+                        icon={<ShoppingCart size={18} />}
+                        label="My Cart"
+                        badge={cartCount}
+                    />
                     {isAuthenticated ? (
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 hover:border-primary transition-colors bg-gray-100" onClick={() => setUserDropDownOpen(!userDropDownOpen)}>
+                        <div
+                            className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 hover:border-primary transition-colors bg-gray-100"
+                            onClick={() =>
+                                setUserDropDownOpen(!userDropDownOpen)
+                            }
+                        >
                             <User className="text-gray-500" />
                         </div>
                     ) : (
                         <div className="flex gap-2">
-                            <Link to="/login" className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md">Login</Link>
-                            <Link to="/register" className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md">Register</Link>
+                            <Link
+                                to="/login"
+                                className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                to="/register"
+                                className="bg-primary text-white p-1 font-xs hover:bg-primary-dark transition-all rounded-md"
+                            >
+                                Register
+                            </Link>
                         </div>
                     )}
-                    {
-                        userDropDownOpen && <div className="flex flex-col gap-2 absolute top-full right-0 w-max rounded-md bg-white shadow-md p-2 border border-gray-200">
-                            <Link to="/profile" className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+                    {userDropDownOpen && (
+                        <div className="flex flex-col gap-2 absolute top-full right-0 w-max rounded-md bg-white shadow-md p-2 border border-gray-200">
+                            <Link
+                                to="/profile"
+                                className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer"
+                            >
                                 <User size={16} />
                                 <span className="text-sm">Profile</span>
                             </Link>
                             {role === "admin" && (
-                                <Link to="/admin-dashboard" className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+                                <Link
+                                    to="/admin-dashboard"
+                                    className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer"
+                                >
                                     <LayoutDashboard size={16} />
-                                    <span className="text-sm">Admin Dashboard</span>
+                                    <span className="text-sm">
+                                        Admin Dashboard
+                                    </span>
                                 </Link>
                             )}
-                            <div onClick={handleSignOut} className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer text-red-500">
+                            <div
+                                onClick={handleSignOut}
+                                className="flex gap-4 items-center hover:bg-gray-100 p-1 rounded-md cursor-pointer text-red-500"
+                            >
                                 <LogOut size={16} />
                                 <span className="text-sm">Logout</span>
                             </div>
                         </div>
-                    }
+                    )}
                 </div>
 
                 {/* Mobile Menu Button */}
-                <button className="md:hidden text-gray-600 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <button
+                    className="md:hidden text-gray-600 hover:text-primary transition-colors"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
                     <Menu size={24} />
                 </button>
             </div>
@@ -162,7 +219,12 @@ const Header = () => {
             <NavigationBar />
 
             {/* Mobile Sidebar Navigation */}
-            <MobileSideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isAuthenticated={isAuthenticated} cartCount={cartCount} />
+            <MobileSideBar
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                isAuthenticated={isAuthenticated}
+                cartCount={cartCount}
+            />
         </header>
     );
 };

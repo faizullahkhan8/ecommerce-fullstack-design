@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-// import { useGetOrderById } from "../../api/hooks/order.api.js";
+import {
+    useGetOrderById,
+    useUpdateOrderStatus,
+    useDeleteOrder,
+} from "../../api/hooks/orders.api.js";
 import { ArrowLeft, Package, User, MapPin } from "lucide-react";
 
 const OrderDetails = () => {
@@ -9,17 +13,33 @@ const OrderDetails = () => {
     const navigate = useNavigate();
 
     const [order, setOrder] = useState(null);
-    // const { getOrderById, loading } = useGetOrderById();
+    const { getOrderById, loading } = useGetOrderById();
+    const { updateOrderStatus } = useUpdateOrderStatus();
+    const { deleteOrder } = useDeleteOrder();
 
-    // useEffect(() => {
-    //     if (orderId) {
-    //         getOrderById(orderId).then((res) => {
-    //             if (res?.success) setOrder(res.order);
-    //         });
-    //     }
-    // }, [orderId]);
+    console.log(order);
 
-    if (!order)
+    useEffect(() => {
+        if (orderId) {
+            getOrderById(orderId).then((res) => {
+                if (res?.success) setOrder(res.order);
+            });
+        }
+    }, [orderId]);
+
+    const handleStatusUpdate = async (newStatus) => {
+        if (!orderId) return;
+        const res = await updateOrderStatus({ orderId, status: newStatus });
+        if (res?.order) setOrder(res.order);
+    };
+
+    const handleDelete = async () => {
+        if (!orderId) return;
+        const res = await deleteOrder(orderId);
+        if (res?.success) navigate(-1);
+    };
+
+    if (!order || loading)
         return <div className="p-10 text-center">Loading order details...</div>;
 
     return (
@@ -108,7 +128,7 @@ const OrderDetails = () => {
                         <div className="flex justify-between w-48 text-sm">
                             <span className="text-gray-500">Subtotal:</span>
                             <span className="font-medium">
-                                ${order.totalAmount.toFixed(2)}
+                                Rs {order.grandTotal?.toFixed(2)}
                             </span>
                         </div>
                         <div className="flex justify-between w-48 text-sm">
@@ -118,8 +138,31 @@ const OrderDetails = () => {
                         <div className="flex justify-between w-48 text-lg font-bold border-t pt-2 mt-2">
                             <span>Total:</span>
                             <span className="text-blue-600">
-                                Rs: {order.totalAmount.toFixed(2)}
+                                Rs: {order.grandTotal?.toFixed(2)}
                             </span>
+                        </div>
+                        <div className="mt-4 flex items-center gap-2">
+                            <label className="text-sm text-gray-600">
+                                Status:
+                            </label>
+                            <select
+                                value={order.status}
+                                onChange={(e) =>
+                                    handleStatusUpdate(e.target.value)
+                                }
+                                className="border rounded px-2 py-1 text-sm"
+                            >
+                                <option value="pending">Pending</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <button
+                                onClick={handleDelete}
+                                className="ml-4 text-sm text-red-600"
+                            >
+                                Delete Order
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -131,10 +174,10 @@ const OrderDetails = () => {
                             <User size={16} /> Customer
                         </h3>
                         <p className="text-sm font-medium text-gray-900">
-                            {order.user?.name || "Guest"}
+                            Name: {order.recipient?.name || "Guest"}
                         </p>
                         <p className="text-sm text-gray-500">
-                            {order.user?.email}
+                            Phone: {order.recipient?.phone}
                         </p>
                     </div>
 
@@ -143,7 +186,9 @@ const OrderDetails = () => {
                             <MapPin size={16} /> Shipping Address
                         </h3>
                         <p className="text-xs text-gray-600 leading-relaxed italic">
-                            {order.shippingAddress || "No address provided"}
+                            {order.recipient.street +
+                                " " +
+                                order.recipient.city || "No address provided"}
                         </p>
                     </div>
                 </div>

@@ -12,6 +12,10 @@ import {
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../Components/Breadcrumb";
 import { useGetProductById } from "../api/hooks/product.api";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/slices/cartSlice";
+import { toggleWishlist } from "../store/slices/wishlistSlice";
+import { useAddToWishlist, useRemoveFromWishlist } from "../api/hooks/user.api";
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -26,11 +30,22 @@ const ProductDetailPage = () => {
         { label: product?.name || "Product" },
     ];
 
+    const dispatch = useDispatch();
+    const { addToWishlist } = useAddToWishlist();
+    const { removeFromWishlist } = useRemoveFromWishlist();
+    const wishlistItems = useSelector((state) => state.wishlist.items || []);
+    const matchId = (item, product) => {
+        if (!item || !product) return false;
+        const aval = item._id || item.id || item;
+        const bval = product._id || product.id || product;
+        return aval.toString() === bval.toString();
+    };
+    const isInWishlist = !!wishlistItems.find((item) => matchId(item, product));
+
     useEffect(() => {
         (async () => {
             const response = await getProductById(id);
-            console.log(response);
-            if (response.success) {
+            if (response?.success) {
                 setProduct(response.product);
             }
         })();
@@ -43,6 +58,25 @@ const ProductDetailPage = () => {
             </div>
         );
     }
+
+    const handleAddToCart = () => {
+        if (!product) return;
+        dispatch(addToCart(product));
+    };
+
+    const handleWishlist = async () => {
+        if (!product) return;
+        dispatch(toggleWishlist(product));
+        try {
+            if (isInWishlist) {
+                await removeFromWishlist(product._id || product.id);
+            } else {
+                await addToWishlist(product._id || product.id);
+            }
+        } catch {
+            dispatch(toggleWishlist(product));
+        }
+    };
 
     return (
         <div className="container mx-auto px-4 py-8 md:py-12">
@@ -107,26 +141,30 @@ const ProductDetailPage = () => {
 
                     <div>
                         <button
-                            //   onClick={() => addItem(product)}
-                            //   disabled={cartLoading}
+                            onClick={handleAddToCart}
                             className="w-full bg-primary text-white py-2.5 rounded font-medium mb-2 
                                      hover:bg-primary-dark transition-colors disabled:opacity-50 
                                      flex items-center justify-center gap-2"
                         >
                             <ShoppingCart size={18} />
-                            <span>"Add to Cart"</span>
+                            <span>Add to Cart</span>
                         </button>
 
                         {/* Save for Later (Add to Wishlist) */}
                         <button
-                            onClick={() => toggleWishlist(product)}
-                            className="w-full border border-gray-200 text-gray-700 py-2.5 rounded 
-                                     font-medium flex items-center justify-center gap-2 
-                                     hover:bg-gray-50 hover:border-red-200 hover:text-red-500 
-                                     transition-colors"
+                            onClick={handleWishlist}
+                            className={`w-full border border-gray-200 py-2.5 rounded font-medium flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors ${
+                                isInWishlist
+                                    ? "text-red-500 border-red-200"
+                                    : "text-gray-700 hover:text-red-500"
+                            }`}
                         >
                             <Heart size={18} />
-                            <span>Save for later</span>
+                            <span>
+                                {isInWishlist
+                                    ? "Remove from Wishlist"
+                                    : "Add to Wishlist"}
+                            </span>
                         </button>
                     </div>
                 </div>

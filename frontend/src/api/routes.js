@@ -25,4 +25,15 @@ export const CATEGORY_ROUTES = {
 export const ORDER_ROUTES = {
     PLACE: "/orders/place-order",
     GET_ALL: "/orders/get-all",
+    MY_ORDERS: "/orders/my-orders",
+    GET_BY_ID: "/orders", // GET /orders/:id
+    UPDATE: "/orders/update", // PATCH /orders/update/:id
+    DELETE: "/orders/delete", // DELETE /orders/delete/:id
+    DASHBOARD_STATS: "/orders/dashboard-stats", // GET /orders/dashboard-stats
+};
+
+export const WISHLIST_ROUTES = {
+    GET: "/users/wishlist",
+    ADD: "/users/wishlist/add",
+    REMOVE: "/users/wishlist/remove",
 };

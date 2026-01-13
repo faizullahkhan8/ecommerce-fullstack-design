@@ -145,7 +145,7 @@ const OrdersList = () => {
                                                 ></div>
                                                 <div className="absolute right-10 top-2 w-36 bg-white rounded-md shadow-xl border border-gray-100 py-1 z-30">
                                                     <Link
-                                                        to={`/admin-dashboard?tab=order-details&id=${order._id}`}
+                                                        to={`/admin-dashboard?tab=orders-details&id=${order._id}`}
                                                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
                                                     >
                                                         <Eye

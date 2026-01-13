@@ -67,9 +67,11 @@ const CheckoutPage = () => {
         try {
             const response = await placeOrder(orderData);
             console.log(response);
-            if (response.success) {
+            if (response?.success && response?.order?._id) {
                 dispatch(clearCart());
-                navigate("/orders/success"); // Or your preferred route
+                navigate("/orders/success", {
+                    state: { orderId: response.order._id },
+                });
             }
         } catch (error) {
             console.error("Order failed:", error);

@@ -44,7 +44,7 @@ const HomePage = () => {
             {/* Deals and Offers Section */}
             <section className="py-8 md:py-12 bg-white">
                 <div className="container mx-auto px-4">
-                    <DealsAndOffers items={products} />
+                    <DealsAndOffers items={products?.slice(0, 7)} />
                 </div>
             </section>
 
@@ -54,7 +54,7 @@ const HomePage = () => {
                     <Grid
                         title="Home and outdoor"
                         bannerImg="https://picsum.photos/id/111/300/600"
-                        items={products}
+                        items={products?.slice(7, 15)}
                     />
                 </div>
             </section>
@@ -65,7 +65,7 @@ const HomePage = () => {
                     <Grid
                         title="Consumer electronics and gadgets"
                         bannerImg="https://picsum.photos/id/112/300/600"
-                        items={products}
+                        items={products?.slice(15, 23)}
                     />
                 </div>
             </section>
@@ -78,7 +78,7 @@ const HomePage = () => {
             {/* Recommended Items Section */}
             <section className="py-8 md:py-12 bg-white">
                 <div className="container mx-auto px-4">
-                    <RecommendedItems items={products} />
+                    <RecommendedItems items={products?.slice(23, 28)} />
                 </div>
             </section>
 

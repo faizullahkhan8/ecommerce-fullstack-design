@@ -1,7 +1,21 @@
 import { Heart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleWishlist } from "../store/slices/wishlistSlice";
+import { useAddToWishlist, useRemoveFromWishlist } from "../api/hooks/user.api";
 
 const ProductListItem = ({ product }) => {
+    const dispatch = useDispatch();
+    const wishlistItems = useSelector((state) => state.wishlist.items || []);
+    const { addToWishlist } = useAddToWishlist();
+    const { removeFromWishlist } = useRemoveFromWishlist();
+    const matchId = (a, b) => {
+        if (!a || !b) return false;
+        const aval = a._id || a.id || a;
+        const bval = b._id || b.id || b;
+        return aval.toString() === bval.toString();
+    };
+    const isInWishlist = !!wishlistItems.find((i) => matchId(i, product));
     return (
         <div className="bg-white border border-gray-200 rounded-lg p-5 flex flex-col md:flex-row gap-6 hover:shadow-lg transition-shadow">
             {/* Image */}
@@ -54,7 +68,31 @@ const ProductListItem = ({ product }) => {
                             </span>
                         </div>
                     </div>
-                    <button className="p-2 border border-gray-200 rounded-md hover:border-primary hover:text-primary transition-colors">
+                    <button
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dispatch(toggleWishlist(product));
+                            try {
+                                if (isInWishlist) {
+                                    await removeFromWishlist(
+                                        product._id || product.id
+                                    );
+                                } else {
+                                    await addToWishlist(
+                                        product._id || product.id
+                                    );
+                                }
+                            } catch (err) {
+                                dispatch(toggleWishlist(product));
+                            }
+                        }}
+                        className={`p-2 border border-gray-200 rounded-md transition-colors ${
+                            isInWishlist
+                                ? "text-red-500"
+                                : "hover:border-primary hover:text-primary"
+                        }`}
+                    >
                         <Heart size={20} />
                     </button>
                 </div>
